@@ -15,8 +15,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("Up") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
-	# Get the input direction and handle the movement/deceleration.
-	
+	# Get the input direction and handle the movement/deceleration.	
 	var direction := Input.get_axis("Left", "Right")
 	if direction != 0:
 		velocity.x = move_toward(velocity.x,SPEED*direction, ACCELERATION*delta)	
