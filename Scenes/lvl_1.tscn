@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bv0n1d4fy0apd"]
+[gd_scene load_steps=3 format=3 uid="uid://bv0n1d4fy0apd"]
 
 [ext_resource type="Script" path="res://Scripts/lvl_1.gd" id="1_enerb"]
+[ext_resource type="PackedScene" uid="uid://cv4aqvqnskoll" path="res://Scenes/player.tscn" id="2_auyrg"]
 
 [node name="Lvl1" type="Node2D"]
 script = ExtResource("1_enerb")
@@ -11,3 +12,6 @@ script = ExtResource("1_enerb")
 polygon = PackedVector2Array(-1, -1, 17, 0, 17, 164, 67, 164, 110, 149, 198, 149, 211, 162, 306, 162, 306, 0, 320, 0, 320, 180, 0, 180)
 
 [node name="Polygon2D" type="Polygon2D" parent="ground/CollisionPolygon2D"]
+
+[node name="Player" parent="ground/CollisionPolygon2D" instance=ExtResource("2_auyrg")]
+position = Vector2(44, 146)
