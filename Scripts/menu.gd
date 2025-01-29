@@ -25,4 +25,4 @@ func _on_help_btn_pressed() -> void:
 
 
 func _on_quit_btn_pressed() -> void:
-	get_tree().quit
+	get_tree().quit()
