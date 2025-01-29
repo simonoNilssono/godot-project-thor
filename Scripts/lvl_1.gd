@@ -1,8 +1,11 @@
 extends Node2D
-
+@onready var ground: Polygon2D = $ground/CollisionPolygon2D/Polygon2D
+@onready var groundCollision: CollisionPolygon2D = $ground/CollisionPolygon2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# Sets ground sprite to be same as collision box
+	ground.polygon = groundCollision.polygon
 	
 	# Input.mouse_mode = Input.MOUSE_MODE_CONFINED_HIDDEN
 	pass # Replace with function body.
