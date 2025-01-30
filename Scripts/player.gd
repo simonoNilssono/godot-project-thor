@@ -7,11 +7,14 @@ const FRICTION = 30000
 const SPEED = 100.0
 const JUMP_VELOCITY = -300.0
 
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+
+
 # single input events handled here
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Spawn Enemy"):
 		var enemy = ENEMY_SCENE.instantiate()
-		enemy.position = global_position - Vector2(0,50)
+		enemy.position = global_position - Vector2(0,100)
 		get_tree().root.add_child(enemy)
 	
 func _physics_process(delta: float) -> void:
@@ -23,7 +26,7 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("Left", "Right")
 	# Accel or deccel in desired direction depending on input
 	accelOrDeccel(direction, delta)
-	
+	updateAnimations(direction)
 	move_and_slide()
 	
 	
@@ -64,3 +67,13 @@ func handleJump(delta:float)-> void:
 	else:
 		if Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
 			velocity.y = JUMP_VELOCITY /2
+			
+func updateAnimations(direction):
+		if direction !=0:
+			animated_sprite_2d.scale.x = direction
+			animated_sprite_2d.play("run")
+		else:
+			animated_sprite_2d.play("idle")
+		if not is_on_floor():
+			animated_sprite_2d.play("jump")	
+				

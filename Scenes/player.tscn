@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://3171raopg10h" path="res://Sprites/ThorSpritesheet.png" id="2_ehapr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_we3n4"]
-size = Vector2(26.9231, 28)
+size = Vector2(36.5385, 28)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f2eb1"]
 size = Vector2(20, 32)
@@ -91,7 +91,7 @@ floor_snap_length = 2.0
 script = ExtResource("1_r2mqc")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(-3, -14)
+position = Vector2(0.5, -14)
 scale = Vector2(0.52, 1)
 shape = SubResource("RectangleShape2D_we3n4")
 
@@ -112,6 +112,7 @@ position = Vector2(0, -6)
 shape = SubResource("RectangleShape2D_f2eb1")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
-position = Vector2(0, -25)
+position = Vector2(0.5, -25)
 sprite_frames = SubResource("SpriteFrames_mm36x")
 animation = &"idle"
+flip_h = true
