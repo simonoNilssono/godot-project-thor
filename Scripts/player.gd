@@ -1,11 +1,19 @@
 extends CharacterBody2D
 
+#WIP
+const ENEMY_SCENE = preload("res://enemy.tscn")
 const ACCELERATION = 30000
 const FRICTION = 30000
 const SPEED = 100.0
 const JUMP_VELOCITY = -300.0
 
-
+# single input events handled here
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("Spawn Enemy"):
+		var enemy = ENEMY_SCENE.instantiate()
+		enemy.position = global_position - Vector2(0,50)
+		get_tree().root.add_child(enemy)
+	
 func _physics_process(delta: float) -> void:
 	# Apply gravity
 	addGravity(delta)
@@ -18,7 +26,7 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
-	print(mousePosX())
+	
 	
 func hammerSwing(mousePosX):
 	if mousePosX >= 0:
