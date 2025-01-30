@@ -26,9 +26,9 @@ position = Vector2(10, 0)
 position = Vector2(0, -6)
 shape = SubResource("RectangleShape2D_f2eb1")
 
-[node name="RightHitbox2" type="Area2D" parent="."]
+[node name="LeftHitbox" type="Area2D" parent="."]
 position = Vector2(-10, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightHitbox2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftHitbox"]
 position = Vector2(0, -6)
 shape = SubResource("RectangleShape2D_f2eb1")
