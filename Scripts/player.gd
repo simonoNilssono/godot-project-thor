@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 #WIP
-const ENEMY_SCENE = preload("res://enemy.tscn")
+const ENEMY_SCENE = preload("res://Scenes/enemy.tscn")
 const ACCELERATION = 30000
 const FRICTION = 30000
 const SPEED = 100.0
