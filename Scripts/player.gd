@@ -18,7 +18,10 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
-	
+	var mousePos = get_global_mouse_position().x - global_position.x
+	print(mousePos)
+func mousePointer(delta):
+	pass	
 	
 func accelOrDeccel(direction, delta):
 	if direction != 0:
