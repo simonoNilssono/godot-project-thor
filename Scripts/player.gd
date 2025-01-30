@@ -18,9 +18,22 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
+	print(mousePosX())
 	
-	
-	
+func hammerSwing(mousePosX):
+	if mousePosX >= 0:
+		#if mousePosX * transform.scale.x < 1
+			# transform.scale.x = 1 to flip sprite
+		# play swing animation 
+		# hit detection on right hitbox, maybe before swing?
+		
+		# 
+	#if mousePosX * transform.scale.x < 1	
+		# transform.scale.x = -1 to flip sprite
+		# play swing animation 
+		# hit detection on left hitbox, maybe before swing?
+		
+		pass 	
 	
 func mousePosX() -> float:
 	var mousePos = get_global_mouse_position().x - global_position.x
