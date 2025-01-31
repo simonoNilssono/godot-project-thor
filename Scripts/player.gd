@@ -15,9 +15,7 @@ const JUMP_VELOCITY = -300.0
 # single input events handled here
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Spawn Enemy"):
-		var enemy = ENEMY_SCENE.instantiate()
-		enemy.position = global_position - Vector2(0,100)
-		get_tree().root.add_child(enemy)
+		spawnEnemy()
 		
 	if event.is_action_pressed("SwingHammer"):
 		hammerSwing(mousePosX())
@@ -36,25 +34,26 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
-	
+func spawnEnemy():
+	var enemy = ENEMY_SCENE.instantiate()
+	enemy.position = global_position - Vector2(0,100)
+	get_tree().root.add_child(enemy)	
 	
 func hammerSwing(mousePosX):
 	if mousePosX >= 0:
-		#if (mousePosX * scale.x) < 1:	
-		#scale.x = 1
-	#else:
-		#scale.x = -1	
-	# play swing animation 
-		# hit detection on right hitbox, maybe before swing?
+		animated_sprite_2d.scale.x = 1
+		var hammer = HAMMER_SCENE.instantiate()
+		hammer.position = global_position + Vector2(32,0)
+		get_parent().add_child(hammer)
+		#after timer expires quee free
+	else:
+		animated_sprite_2d.scale.x = -1		
+		var hammer = HAMMER_SCENE.instantiate()
+		hammer.position = global_position + Vector2(-32,0)
+		get_parent().add_child(hammer)	
+		#after timer expires quee free
 		
-		# 
-	#if mousePosX * transform.scale.x < 1	
-		# transform.scale.x = -1 to flip sprite
-		# play swing animation 
-		# hit detection on left hitbox, maybe before swing?
 		
-		pass 	
-	
 func mousePosX() -> float:
 	var mousePos = get_global_mouse_position().x - global_position.x
 	return mousePos
@@ -65,7 +64,7 @@ func accelOrDeccel(direction, delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
 		
-		
+
 func addGravity(delta:float)-> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta

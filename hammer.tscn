@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsw1fa6kn82eg"]
+[gd_scene load_steps=4 format=3 uid="uid://dsw1fa6kn82eg"]
 
 [ext_resource type="Script" path="res://Scripts/hammer.gd" id="1_xw8ak"]
+[ext_resource type="Texture2D" uid="uid://kf52anhb6b1p" path="res://Sprites/icon.svg" id="2_paj6q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ye1c8"]
 size = Vector2(20, 32)
@@ -15,6 +16,11 @@ position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_ye1c8")
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(1.90735e-06, -16)
+scale = Vector2(0.15625, 0.25)
+texture = ExtResource("2_paj6q")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
