@@ -14,9 +14,11 @@ func _process(delta: float) -> void:
 func _on_area_entered(area: Area2D) -> void:
 	print("area entered hammer")
 
+#
 func _on_body_entered(body: Node2D) -> void:
-	print("body entered hammer")
-
+	if body.is_in_group("Enemies"):
+		body.queue_free()
+	
 
 func _on_timer_timeout() -> void:
 	queue_free()
