@@ -6,9 +6,6 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_we3n4"]
 size = Vector2(36.5385, 28)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_f2eb1"]
-size = Vector2(20, 32)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_72dlg"]
 atlas = ExtResource("2_ehapr")
 region = Rect2(0, 50, 60, 50)
@@ -86,6 +83,9 @@ animations = [{
 "speed": 10.0
 }]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_our5r"]
+size = Vector2(24, 38)
+
 [node name="Player" type="CharacterBody2D"]
 floor_snap_length = 2.0
 script = ExtResource("1_r2mqc")
@@ -95,24 +95,19 @@ position = Vector2(0.5, -14)
 scale = Vector2(0.52, 1)
 shape = SubResource("RectangleShape2D_we3n4")
 
-[node name="RightHitbox" type="Area2D" parent="."]
-position = Vector2(23, -14)
-scale = Vector2(1.57656, 1.23919)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RightHitbox"]
-position = Vector2(0, -6)
-shape = SubResource("RectangleShape2D_f2eb1")
-
-[node name="LeftHitbox" type="Area2D" parent="."]
-position = Vector2(-22, -14)
-scale = Vector2(1.57656, 1.23919)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="LeftHitbox"]
-position = Vector2(0, -6)
-shape = SubResource("RectangleShape2D_f2eb1")
-
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0.5, -25)
 sprite_frames = SubResource("SpriteFrames_mm36x")
 animation = &"idle"
 flip_h = true
+
+[node name="hitbox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="hitbox"]
+position = Vector2(22, -19)
+shape = SubResource("RectangleShape2D_our5r")
+
+[connection signal="area_entered" from="hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="hitbox" to="." method="_on_hitbox_body_entered"]

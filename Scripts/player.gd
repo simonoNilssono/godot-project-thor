@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 #WIP
 const ENEMY_SCENE = preload("res://Scenes/enemy.tscn")
+const HAMMER_SCENE = preload("res://hammer.tscn")
 const ACCELERATION = 30000
 const FRICTION = 30000
 const SPEED = 100.0
@@ -17,6 +18,9 @@ func _input(event: InputEvent) -> void:
 		var enemy = ENEMY_SCENE.instantiate()
 		enemy.position = global_position - Vector2(0,100)
 		get_tree().root.add_child(enemy)
+		
+	if event.is_action_pressed("SwingHammer"):
+		hammerSwing(mousePosX())
 	
 func _physics_process(delta: float) -> void:
 	# Apply gravity
@@ -28,15 +32,19 @@ func _physics_process(delta: float) -> void:
 	# Accel or deccel in desired direction depending on input
 	accelOrDeccel(direction, delta)
 	updateAnimations(direction)
+	
+	
 	move_and_slide()
 	
 	
 	
 func hammerSwing(mousePosX):
 	if mousePosX >= 0:
-		#if mousePosX * transform.scale.x < 1
-			# transform.scale.x = 1 to flip sprite
-		# play swing animation 
+		#if (mousePosX * scale.x) < 1:	
+		#scale.x = 1
+	#else:
+		#scale.x = -1	
+	# play swing animation 
 		# hit detection on right hitbox, maybe before swing?
 		
 		# 
@@ -78,3 +86,7 @@ func updateAnimations(direction):
 		if not is_on_floor():
 			animated_sprite_2d.play("jump")	
 				
+
+
+func _on_hitbox_body_entered(body: Node2D) -> void:
+	print("enemy body detected ")
