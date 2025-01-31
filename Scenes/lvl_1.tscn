@@ -9,9 +9,9 @@ script = ExtResource("1_enerb")
 [node name="ground" type="StaticBody2D" parent="."]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ground"]
-polygon = PackedVector2Array(-1, -1, 17, 0, 17, 164, 67, 164, 110, 149, 198, 149, 211, 162, 306, 162, 306, 0, 320, 0, 320, 180, 0, 180)
+polygon = PackedVector2Array(-1, -1, 17, 0, 17, 249, 97, 248, 188, 210, 309, 210, 354, 244, 449, 244, 449, 0, 480, 0, 478, 269, 0, 269)
 
 [node name="Polygon2D" type="Polygon2D" parent="ground/CollisionPolygon2D"]
 
 [node name="Player" parent="ground/CollisionPolygon2D" instance=ExtResource("2_auyrg")]
-position = Vector2(44, 146)
+position = Vector2(41, 242)
