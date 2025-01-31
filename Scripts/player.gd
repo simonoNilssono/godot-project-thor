@@ -38,21 +38,7 @@ func spawnEnemy():
 	enemy.position = global_position - Vector2(0,100)
 	get_tree().root.add_child(enemy)	
 
-#WIP
-#Swing hammer left or right depending on mouse pos
-#Instantiate new hammer scene(hitbox)
-func hammerSwing(mousePosX):
-	if mousePosX >= 0:
-		animated_sprite_2d.scale.x = 1
-		var hammer = HAMMER_SCENE.instantiate()
-		hammer.position = global_position + Vector2(32,0)
-		get_parent().add_child(hammer)
-		
-	else:
-		animated_sprite_2d.scale.x = -1		
-		var hammer = HAMMER_SCENE.instantiate()
-		hammer.position = global_position + Vector2(-32,0)
-		get_parent().add_child(hammer)	
+
 		
 		
 #Get mouse x pos relative to player		
@@ -80,6 +66,24 @@ func handleJump(delta:float)-> void:
 		if Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
 			velocity.y = JUMP_VELOCITY /2
 			
+			
+#WIP
+#Swing hammer left or right depending on mouse pos
+#Instantiate new hammer scene(hitbox)
+func hammerSwing(mousePosX):
+	if mousePosX >= 0:
+		animated_sprite_2d.scale.x = 1
+		var hammer = HAMMER_SCENE.instantiate()
+		hammer.position = global_position + Vector2(32,0)
+		get_parent().add_child(hammer)
+		
+	else:
+		animated_sprite_2d.scale.x = -1		
+		var hammer = HAMMER_SCENE.instantiate()
+		hammer.position = global_position + Vector2(-32,0)
+		get_parent().add_child(hammer)	
+		
+					
 func updateAnimations(direction):
 		if direction !=0:
 			animated_sprite_2d.scale.x = direction
