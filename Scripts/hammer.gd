@@ -12,11 +12,10 @@ func _process(delta: float) -> void:
 
 
 func _on_area_entered(area: Area2D) -> void:
-	print("hammer area entered")
-
+	print("area entered hammer")
 
 func _on_body_entered(body: Node2D) -> void:
-	print("hammer body entered")
+	print("body entered hammer")
 
 
 func _on_timer_timeout() -> void:

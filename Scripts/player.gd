@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 #WIP
 const ENEMY_SCENE = preload("res://Scenes/enemy.tscn")
+
 const HAMMER_SCENE = preload("res://hammer.tscn")
 const ACCELERATION = 30000
 const FRICTION = 30000
@@ -21,9 +22,7 @@ func _input(event: InputEvent) -> void:
 		hammerSwing(mousePosX())
 	
 func _physics_process(delta: float) -> void:
-	# Apply gravity
 	addGravity(delta)
-	#jumping
 	handleJump(delta)
 	# Get the input direction/axis
 	var direction := Input.get_axis("Left", "Right")
@@ -31,33 +30,37 @@ func _physics_process(delta: float) -> void:
 	accelOrDeccel(direction, delta)
 	updateAnimations(direction)
 	
-	
 	move_and_slide()
-	
+
+#test	
 func spawnEnemy():
 	var enemy = ENEMY_SCENE.instantiate()
 	enemy.position = global_position - Vector2(0,100)
 	get_tree().root.add_child(enemy)	
-	
+
+#WIP
+#Swing hammer left or right depending on mouse pos
+#Instantiate new hammer scene(hitbox)
 func hammerSwing(mousePosX):
 	if mousePosX >= 0:
 		animated_sprite_2d.scale.x = 1
 		var hammer = HAMMER_SCENE.instantiate()
 		hammer.position = global_position + Vector2(32,0)
 		get_parent().add_child(hammer)
-		#after timer expires quee free
+		
 	else:
 		animated_sprite_2d.scale.x = -1		
 		var hammer = HAMMER_SCENE.instantiate()
 		hammer.position = global_position + Vector2(-32,0)
 		get_parent().add_child(hammer)	
-		#after timer expires quee free
 		
 		
+#Get mouse x pos relative to player		
 func mousePosX() -> float:
 	var mousePos = get_global_mouse_position().x - global_position.x
 	return mousePos
-	
+
+#Acceleration depending on input or no input	
 func accelOrDeccel(direction, delta):
 	if direction != 0:
 		velocity.x = move_toward(velocity.x,SPEED*direction, ACCELERATION*delta)	
@@ -68,7 +71,8 @@ func accelOrDeccel(direction, delta):
 func addGravity(delta:float)-> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
-		
+
+#High or short jump depending on if key is held 		
 func handleJump(delta:float)-> void:
 	if Input.is_action_just_pressed("Up") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
@@ -85,7 +89,3 @@ func updateAnimations(direction):
 		if not is_on_floor():
 			animated_sprite_2d.play("jump")	
 				
-
-
-func _on_hitbox_body_entered(body: Node2D) -> void:
-	print("enemy body detected ")
