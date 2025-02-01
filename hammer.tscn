@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://kf52anhb6b1p" path="res://Sprites/icon.svg" id="2_paj6q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ye1c8"]
-size = Vector2(20, 32)
+size = Vector2(28, 39)
 
 [node name="Hammer" type="Area2D"]
 collision_layer = 2
@@ -12,12 +12,12 @@ collision_mask = 5
 script = ExtResource("1_xw8ak")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -16)
+position = Vector2(0, -19.5)
 shape = SubResource("RectangleShape2D_ye1c8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(1.90735e-06, -16)
-scale = Vector2(0.15625, 0.25)
+position = Vector2(-7.15256e-07, -19.5)
+scale = Vector2(0.21875, 0.304688)
 texture = ExtResource("2_paj6q")
 
 [node name="SwingTimer" type="Timer" parent="."]

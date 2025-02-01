@@ -81,6 +81,7 @@ func instantiateHammer(mouseDirX):
 	#instantiate the swing hitbox at correct position away from player
 	var hammer = HAMMER_SCENE.instantiate()
 	hammer.position = global_position + Vector2(mouseDirX*32,0)
+	hammer.direction = mouseDirX
 	get_parent().add_child(hammer)	
 	return hammer
 
