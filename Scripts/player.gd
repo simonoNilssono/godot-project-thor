@@ -81,23 +81,23 @@ func instantiateHammer(mouseDirX):
 	#flip player if needed	
 	animated_sprite_2d.scale.x = mouseDirX	# move to updateAnimations, remove reduntancies 
 	
-	#instantiate the swing hitbox at correct position away from player
+	
 	var hammer = HAMMER_SCENE.instantiate()
-	hammer.position = global_position + Vector2(mouseDirX*32,0)
+	hammer.position = global_position
 	hammer.direction = mouseDirX
+	
 	get_parent().add_child(hammer)	
 	return hammer
 
 #Throw hammer	
 func hammerThrow(mouseDirX,mousePos) -> void:
-		
-		instantiateHammer(mouseDirX()).hammerThrow(mousePos)		
-		Global.startThrow.emit()
+		instantiateHammer(mouseDirX()).position +=  Vector2(0,-20)		
+		Global.startThrow.emit(mousePos)
 
 
-#Swing hammer left or right depending on mouse pos
+#Swing hammer left or right depending on mouse pos (+ or - 1)
 func hammerSwing(mouseDirX):	
-	instantiateHammer(mouseDirX())
+	instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*32,-20)
 	Global.startSwing.emit()
 	
 #Animations					

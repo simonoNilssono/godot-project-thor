@@ -1,4 +1,4 @@
 extends Node
 
 signal startSwing
-signal startThrow
+signal startThrow(Vector2)

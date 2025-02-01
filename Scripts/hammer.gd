@@ -3,6 +3,7 @@ extends Area2D
 var thrown = false
 var speed = 300
 var direction: int
+var targetDir : Vector2
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Global.startSwing.connect(_on_swing_timer_start)
@@ -11,11 +12,8 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	if thrown:
-		move_local_x(direction *  speed * delta)
-	
-
-func hammerThrow(mousePos):
-	print(mousePos)
+		position += (transform.x * speed * delta)
+		
 
 # placeholder
 func _on_area_entered(area: Area2D) -> void:
@@ -32,9 +30,11 @@ func _on_swing_timer_start():
 func _on_swing_timer_timeout() -> void:
 	queue_free()
 
-func _on_throw_timer_start():
+func _on_throw_timer_start(mousePos):
 	$ThrowTimer.start()
 	thrown = true
-
+	look_at(get_global_mouse_position())
+	
 func _on_throw_timer_timeout() -> void:
+	thrown = false
 	queue_free()
