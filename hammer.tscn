@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://kf52anhb6b1p" path="res://Sprites/icon.svg" id="2_paj6q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ye1c8"]
-size = Vector2(28, 39)
+size = Vector2(28, 36)
 
 [node name="Hammer" type="Area2D"]
 collision_layer = 2
@@ -15,8 +15,8 @@ script = ExtResource("1_xw8ak")
 shape = SubResource("RectangleShape2D_ye1c8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(1.7053e-13, 1.90735e-06)
-scale = Vector2(0.21875, 0.304688)
+position = Vector2(5.51013e-40, 0)
+scale = Vector2(0.21875, 0.289063)
 texture = ExtResource("2_paj6q")
 
 [node name="SwingTimer" type="Timer" parent="."]
@@ -24,6 +24,7 @@ wait_time = 0.265
 one_shot = true
 
 [node name="ThrowTimer" type="Timer" parent="."]
+one_shot = true
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

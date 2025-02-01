@@ -6,7 +6,7 @@
 [node name="Lvl1" type="Node2D"]
 script = ExtResource("1_enerb")
 
-[node name="ground" type="StaticBody2D" parent="."]
+[node name="ground" type="StaticBody2D" parent="." groups=["Terrain"]]
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="ground"]
 polygon = PackedVector2Array(-1, -1, 17, 0, 17, 249, 97, 248, 188, 210, 309, 210, 354, 244, 449, 244, 449, 0, 480, 0, 478, 269, 0, 269)

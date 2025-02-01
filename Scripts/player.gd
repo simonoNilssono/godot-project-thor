@@ -91,7 +91,7 @@ func instantiateHammer(mouseDirX):
 
 #Throw hammer	
 func hammerThrow(mouseDirX,mousePos) -> void:
-		instantiateHammer(mouseDirX()).position +=  Vector2(0,-20)		
+		instantiateHammer(mouseDirX()).position +=  Vector2(0,-25)		
 		Global.startThrow.emit(mousePos)
 
 
