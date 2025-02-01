@@ -12,7 +12,6 @@ const JUMP_VELOCITY = -300.0
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 
-
 # single input events handled here
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Spawn Enemy"):
@@ -20,7 +19,8 @@ func _input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("SwingHammer"):
 		hammerSwing(mousePosX())
-	
+		
+# physics dependent events here	(most stuff is)
 func _physics_process(delta: float) -> void:
 	addGravity(delta)
 	handleJump(delta)
@@ -32,7 +32,7 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 
-#test	
+#for testing
 func spawnEnemy():
 	var enemy = ENEMY_SCENE.instantiate()
 	enemy.position = global_position - Vector2(0,100)
@@ -53,7 +53,7 @@ func accelOrDeccel(direction, delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
 		
-
+#gravity
 func addGravity(delta:float)-> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -77,7 +77,10 @@ func hammerSwing(mousePosX):
 	else:
 		swingDir = -1
 		
+	#flip player if needed	
 	animated_sprite_2d.scale.x = swingDir		# move to updateAnimations
+	
+	#instantiate the swing hitbox at correct position away from player
 	var hammer = HAMMER_SCENE.instantiate()
 	hammer.position = global_position + Vector2(swingDir*32,0)
 	get_parent().add_child(hammer)	
