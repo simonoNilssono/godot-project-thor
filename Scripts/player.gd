@@ -76,13 +76,14 @@ func hammerSwing(mousePosX):
 		var hammer = HAMMER_SCENE.instantiate()
 		hammer.position = global_position + Vector2(32,0)
 		get_parent().add_child(hammer)
+		Global.startSwing.emit()
 		
 	else:
 		animated_sprite_2d.scale.x = -1		
 		var hammer = HAMMER_SCENE.instantiate()
 		hammer.position = global_position + Vector2(-32,0)
 		get_parent().add_child(hammer)	
-		
+		Global.startSwing.emit()
 					
 func updateAnimations(direction):
 		if direction !=0:
