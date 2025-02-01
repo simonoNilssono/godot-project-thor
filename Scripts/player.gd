@@ -18,7 +18,7 @@ func _input(event: InputEvent) -> void:
 		spawnEnemy()
 		
 	if event.is_action_pressed("SwingHammer"):
-		hammerSwing(mousePosX())
+		hammerSwing(mouseDirX())
 		
 # physics dependent events here	(most stuff is)
 func _physics_process(delta: float) -> void:
@@ -41,10 +41,15 @@ func spawnEnemy():
 
 		
 		
-#Get mouse x pos relative to player		
-func mousePosX() -> float:
+#Get mouse x pos relative to player	as an int	
+func mouseDirX() -> float:
+	var mouseDir = 0
 	var mousePos = get_global_mouse_position().x - global_position.x
-	return mousePos
+	if mousePos >=0:
+		mouseDir = 1
+	else:
+		mouseDir = -1	
+	return mouseDir
 
 #Acceleration depending on input or no input	
 func accelOrDeccel(direction, delta):
@@ -70,19 +75,13 @@ func handleJump(delta:float)-> void:
 #WIP
 #Swing hammer left or right depending on mouse pos
 #Instantiate new hammer scene(hitbox)
-func hammerSwing(mousePosX):
-	var swingDir = 0
-	if mousePosX >= 0:
-		swingDir = 1		
-	else:
-		swingDir = -1
-		
+func hammerSwing(mouseDirX):	
 	#flip player if needed	
-	animated_sprite_2d.scale.x = swingDir		# move to updateAnimations
+	animated_sprite_2d.scale.x = mouseDirX		# move to updateAnimations
 	
 	#instantiate the swing hitbox at correct position away from player
 	var hammer = HAMMER_SCENE.instantiate()
-	hammer.position = global_position + Vector2(swingDir*32,0)
+	hammer.position = global_position + Vector2(mouseDirX*32,0)
 	get_parent().add_child(hammer)	
 	Global.startSwing.emit()
 					
