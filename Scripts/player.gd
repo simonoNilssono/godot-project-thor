@@ -71,19 +71,17 @@ func handleJump(delta:float)-> void:
 #Swing hammer left or right depending on mouse pos
 #Instantiate new hammer scene(hitbox)
 func hammerSwing(mousePosX):
+	var swingDir = 0
 	if mousePosX >= 0:
-		animated_sprite_2d.scale.x = 1
-		var hammer = HAMMER_SCENE.instantiate()
-		hammer.position = global_position + Vector2(32,0)
-		get_parent().add_child(hammer)
-		Global.startSwing.emit()
-		
+		swingDir = 1		
 	else:
-		animated_sprite_2d.scale.x = -1		
-		var hammer = HAMMER_SCENE.instantiate()
-		hammer.position = global_position + Vector2(-32,0)
-		get_parent().add_child(hammer)	
-		Global.startSwing.emit()
+		swingDir = -1
+		
+	animated_sprite_2d.scale.x = swingDir		# move to updateAnimations
+	var hammer = HAMMER_SCENE.instantiate()
+	hammer.position = global_position + Vector2(swingDir*32,0)
+	get_parent().add_child(hammer)	
+	Global.startSwing.emit()
 					
 func updateAnimations(direction):
 		if direction !=0:

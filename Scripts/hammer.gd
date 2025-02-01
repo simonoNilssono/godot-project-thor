@@ -13,11 +13,11 @@ func _process(delta: float) -> void:
 
 	
 
-
+# placeholder
 func _on_area_entered(area: Area2D) -> void:
 	print("area entered hammer")
 
-#
+
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Enemies"):
 		body.queue_free()
