@@ -4,14 +4,15 @@ extends Area2D
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Global.startSwing.connect(_on_swing_timer_start)
-
+	Global.startThrow.connect(_on_throw_timer_start)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 	
 
-	
+func hammerThrow():
+	pass	
 
 # placeholder
 func _on_area_entered(area: Area2D) -> void:
@@ -26,4 +27,11 @@ func _on_swing_timer_start():
 	$SwingTimer.start()
 
 func _on_swing_timer_timeout() -> void:
+	queue_free()
+
+func _on_throw_timer_start():
+	$ThrowTimer.start()
+
+
+func _on_throw_timer_timeout() -> void:
 	queue_free()

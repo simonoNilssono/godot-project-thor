@@ -15,11 +15,12 @@ const JUMP_VELOCITY = -300.0
 # single input events handled here
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Spawn Enemy"):
-		spawnEnemy()
-		
+		spawnEnemy()	
 	if event.is_action_pressed("SwingHammer"):
 		hammerSwing(mouseDirX())
-		
+	if event.is_action_pressed("Throw Hammer"):
+		hammerThrow(mouseDirX())
+	
 # physics dependent events here	(most stuff is)
 func _physics_process(delta: float) -> void:
 	addGravity(delta)
@@ -29,6 +30,7 @@ func _physics_process(delta: float) -> void:
 	# Accel or deccel in desired direction depending on input
 	accelOrDeccel(direction, delta)
 	updateAnimations(direction)
+	
 	
 	move_and_slide()
 
@@ -41,7 +43,7 @@ func spawnEnemy():
 
 		
 		
-#Get mouse x pos relative to player	as an int	
+#Get mouse x pos relative to player	and return as an int	
 func mouseDirX() -> float:
 	var mouseDir = 0
 	var mousePos = get_global_mouse_position().x - global_position.x
@@ -71,20 +73,29 @@ func handleJump(delta:float)-> void:
 		if Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
 			velocity.y = JUMP_VELOCITY /2
 			
-			
-#WIP
-#Swing hammer left or right depending on mouse pos
 #Instantiate new hammer scene(hitbox)
-func hammerSwing(mouseDirX):	
+func instantiateHammer(mouseDirX):
 	#flip player if needed	
-	animated_sprite_2d.scale.x = mouseDirX		# move to updateAnimations
+	animated_sprite_2d.scale.x = mouseDirX	# move to updateAnimations, remove reduntancies 
 	
 	#instantiate the swing hitbox at correct position away from player
 	var hammer = HAMMER_SCENE.instantiate()
 	hammer.position = global_position + Vector2(mouseDirX*32,0)
 	get_parent().add_child(hammer)	
+	return hammer
+
+#Throw hammer	
+func hammerThrow(mouseDirX) -> void:
+		instantiateHammer(mouseDirX()).hammerThrow()		
+		Global.startThrow.emit()
+
+
+#Swing hammer left or right depending on mouse pos
+func hammerSwing(mouseDirX):	
+	instantiateHammer(mouseDirX())
 	Global.startSwing.emit()
-					
+	
+#Animations					
 func updateAnimations(direction):
 		if direction !=0:
 			animated_sprite_2d.scale.x = direction
