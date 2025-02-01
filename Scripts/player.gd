@@ -11,7 +11,8 @@ const JUMP_VELOCITY = -300.0
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
-
+enum State {Jump, Idle, Run, Attack}
+var current_state: State
 # single input events handled here
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Spawn Enemy"):
