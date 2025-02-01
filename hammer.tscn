@@ -24,6 +24,7 @@ wait_time = 0.265
 one_shot = true
 
 [node name="ThrowTimer" type="Timer" parent="."]
+wait_time = 10.488
 one_shot = true
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

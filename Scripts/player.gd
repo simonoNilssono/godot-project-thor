@@ -89,10 +89,10 @@ func instantiateHammer(mouseDirX):
 	get_parent().add_child(hammer)	
 	return hammer
 
-#Throw hammer	
+#Throw hammer from the correct position	
 func hammerThrow(mouseDirX,mousePos) -> void:
-		instantiateHammer(mouseDirX()).position +=  Vector2(0,-25)		
-		Global.startThrow.emit(mousePos)
+		instantiateHammer(mouseDirX()).position += Vector2(0,-25)		
+		Global.startThrow.emit(mouseDirX,mousePos)
 
 
 #Swing hammer left or right depending on mouse pos (+ or - 1)
