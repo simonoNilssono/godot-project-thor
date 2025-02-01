@@ -19,7 +19,7 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("SwingHammer"):
 		hammerSwing(mouseDirX())
 	if event.is_action_pressed("Throw Hammer"):
-		hammerThrow(mouseDirX())
+		hammerThrow(mouseDirX(),mousePos())
 	
 # physics dependent events here	(most stuff is)
 func _physics_process(delta: float) -> void:
@@ -43,16 +43,19 @@ func spawnEnemy():
 
 		
 		
-#Get mouse x pos relative to player	and return as an int	
-func mouseDirX() -> float:
+#Get mouse x direction relative to player and return as an int	
+func mouseDirX() -> int:
 	var mouseDir = 0
-	var mousePos = get_global_mouse_position().x - global_position.x
-	if mousePos >=0:
+	var mousePosX = get_global_mouse_position().x - global_position.x
+	if mousePosX >=0:
 		mouseDir = 1
 	else:
 		mouseDir = -1	
 	return mouseDir
-
+	
+func mousePos() -> Vector2:
+	var mousePos = get_global_mouse_position() - global_position
+	return mousePos
 #Acceleration depending on input or no input	
 func accelOrDeccel(direction, delta):
 	if direction != 0:
@@ -86,8 +89,9 @@ func instantiateHammer(mouseDirX):
 	return hammer
 
 #Throw hammer	
-func hammerThrow(mouseDirX) -> void:
-		instantiateHammer(mouseDirX()).hammerThrow()		
+func hammerThrow(mouseDirX,mousePos) -> void:
+		
+		instantiateHammer(mouseDirX()).hammerThrow(mousePos)		
 		Global.startThrow.emit()
 
 
