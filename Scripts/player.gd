@@ -104,10 +104,11 @@ func hammerThrow(mouseDirX,mousePos) -> void:
 
 #Swing hammer left or right depending on mouse pos (+ or - 1)
 func hammerSwing(mouseDirX):	
-	instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*32,-20)
-	Global.startSwing.emit()
-	animated_sprite_2d.play("swing")
-	$Timer.start()
+	if not hammerLess:
+		instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*32,-20)
+		Global.startSwing.emit()
+		animated_sprite_2d.play("swing")
+		$Timer.start()
 	
 	
 #Animations					
@@ -135,8 +136,6 @@ func updateAnimations(direction):
 
 func _on_timer_timeout() -> void:
 	time +=$Timer.wait_time
-	print(time)
-	print(animated_sprite_2d.frame)
 	if time > 0.49:
 		animated_sprite_2d.stop()
-		print("stopped")
+		
