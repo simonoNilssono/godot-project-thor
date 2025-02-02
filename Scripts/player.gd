@@ -16,7 +16,7 @@ var hammerLess = false
 var time = 0.0
 
 func _ready():
-	pass
+	Global.hammerReturned.connect(_on_hammer_returned)
 	
 # single input events handled here
 func _input(event: InputEvent) -> void:
@@ -25,7 +25,7 @@ func _input(event: InputEvent) -> void:
 	if not hammerLess:	
 		if event.is_action_pressed("SwingHammer"):
 			hammerSwing(mouseDirX())
-		if event.is_action_pressed("Throw Hammer"):
+		if event.is_action_pressed("Throw Hammer") and animated_sprite_2d.animation != "swing":
 			hammerThrow(mouseDirX(),mousePos())
 	
 # physics dependent events here	(most stuff is)
@@ -140,3 +140,5 @@ func _on_timer_timeout() -> void:
 	if time > 0.34:
 		animated_sprite_2d.stop()
 		
+func _on_hammer_returned():
+	hammerLess = false

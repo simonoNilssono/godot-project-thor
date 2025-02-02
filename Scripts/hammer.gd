@@ -39,6 +39,7 @@ func returning(delta):
 	#delete instance if to close to body when returning, no more hammer stuck  in ground
 	if abs(position.x-get_parent().get_child(0).position.x
 	) < 5 and abs(position.y-get_parent().get_child(0).position.y) < 5:
+		Global.hammerReturned.emit()
 		queue_free() 
 
 #detect collisions					
@@ -52,6 +53,7 @@ func _on_body_entered(body: Node2D) -> void:
 		current_state = State.Returning
 	#if hammered returned, delete instance	
 	if body.is_in_group("Player") and current_state == State.Returning:
+		Global.hammerReturned.emit()
 		queue_free()	
 	
 
@@ -77,4 +79,5 @@ func _on_throw_timer_start(mouseDirX,mousePos):
 
 # delete if hammer survives too long, rarely used	
 func _on_throw_timer_timeout() -> void:
+	Global.hammerReturned.emit()
 	queue_free()
