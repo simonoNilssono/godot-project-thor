@@ -17,27 +17,26 @@ var time = 0.0
 
 func _ready():
 	pass
+	
 # single input events handled here
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Spawn Enemy"):
 		spawnEnemy()	
-	if event.is_action_pressed("SwingHammer"):
-		hammerSwing(mouseDirX())
-	if event.is_action_pressed("Throw Hammer"):
-		hammerThrow(mouseDirX(),mousePos())
+	if not hammerLess:	
+		if event.is_action_pressed("SwingHammer"):
+			hammerSwing(mouseDirX())
+		if event.is_action_pressed("Throw Hammer"):
+			hammerThrow(mouseDirX(),mousePos())
 	
 # physics dependent events here	(most stuff is)
 func _physics_process(delta: float) -> void:
-	addGravity(delta)
-	handleJump(delta)
 	# Get the input direction/axis
 	var direction := Input.get_axis("Left", "Right")
-	# Accel or deccel in desired direction depending on input
+	
+	addGravity(delta)
+	handleJump(delta)	
 	accelOrDeccel(direction, delta)
-	
-	updateAnimations(direction)
-	
-	
+	updateAnimations(direction)	
 	move_and_slide()
 
 #for testing
@@ -58,10 +57,12 @@ func mouseDirX() -> int:
 	else:
 		mouseDir = -1	
 	return mouseDir
-	
+
+# Get mousepos relative to player	
 func mousePos() -> Vector2:
 	var mousePos = get_global_mouse_position() - global_position
 	return mousePos
+	
 #Acceleration depending on input or no input	
 func accelOrDeccel(direction, delta):
 	if direction != 0:
@@ -69,7 +70,7 @@ func accelOrDeccel(direction, delta):
 	else:
 		velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
 		
-#gravity
+#Gravity
 func addGravity(delta:float)-> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
@@ -97,7 +98,6 @@ func instantiateHammer(mouseDirX):
 
 #Throw hammer from the correct position	
 func hammerThrow(mouseDirX,mousePos) -> void:
-		
 		instantiateHammer(mouseDirX()).position += Vector2(0,-25)		
 		Global.startThrow.emit(mouseDirX,mousePos)
 		hammerLess = true
@@ -123,8 +123,7 @@ func updateAnimations(direction):
 				animated_sprite_2d.scale.x = direction
 				animated_sprite_2d.play("run")
 			if not is_on_floor():
-				animated_sprite_2d.play("jump")	
-				
+				animated_sprite_2d.play("jump")		
 	else:
 		if not (animated_sprite_2d.animation == "swing" and animated_sprite_2d.is_playing()):
 			if direction == 0:
@@ -135,7 +134,7 @@ func updateAnimations(direction):
 			if not is_on_floor():
 				animated_sprite_2d.play("jump_hammerless")			
 
-
+# stop looping hit animation 
 func _on_timer_timeout() -> void:
 	time +=$Timer.wait_time
 	if time > 0.34:

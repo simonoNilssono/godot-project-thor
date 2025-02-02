@@ -36,7 +36,7 @@ func returning(delta):
 	look_at(get_parent().get_child(0).position)
 	position += (transform.x * speed * delta)
 	
-	#delete instance if to close when returning, no more hammer stuck  in ground
+	#delete instance if to close to body when returning, no more hammer stuck  in ground
 	if abs(position.x-get_parent().get_child(0).position.x
 	) < 5 and abs(position.y-get_parent().get_child(0).position.y) < 5:
 		queue_free() 
