@@ -1,0 +1,61 @@
+[gd_scene load_steps=8 format=3 uid="uid://dsw1fa6kn82eg"]
+
+[ext_resource type="Script" path="res://Scripts/hammer.gd" id="1_xw8ak"]
+[ext_resource type="Texture2D" uid="uid://3171raopg10h" path="res://Sprites/ThorSpritesheet.png" id="2_4dj8x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ye1c8"]
+size = Vector2(20, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mr8k2"]
+atlas = ExtResource("2_4dj8x")
+region = Rect2(80, 100, 80, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5eyxw"]
+atlas = ExtResource("2_4dj8x")
+region = Rect2(160, 100, 80, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smdjd"]
+atlas = ExtResource("2_4dj8x")
+region = Rect2(240, 100, 80, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vcn73"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mr8k2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5eyxw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smdjd")
+}],
+"loop": true,
+"name": &"throw",
+"speed": 15.0
+}]
+
+[node name="Hammer" type="Area2D"]
+collision_layer = 2
+collision_mask = 7
+script = ExtResource("1_xw8ak")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ye1c8")
+
+[node name="SwingTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
+[node name="ThrowTimer" type="Timer" parent="."]
+wait_time = 10.488
+one_shot = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_vcn73")
+animation = &"throw"
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="SwingTimer" to="." method="_on_swing_timer_timeout"]
+[connection signal="timeout" from="ThrowTimer" to="." method="_on_throw_timer_timeout"]

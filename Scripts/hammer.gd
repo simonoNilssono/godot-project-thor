@@ -7,7 +7,7 @@ var targetPos : Vector2
 var startPos : Vector2
 enum State {Swung, Thrown, Returning}
 var current_state = State
-
+var hitPos=  Vector2(10,10)
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 # Called when the node enters the scene tree for the first time.
@@ -20,6 +20,9 @@ func _physics_process(delta: float) -> void:
 	if current_state == State.Thrown:
 		throwing(delta)
 	if current_state == State.Returning:
+		
+		#if (abs(position))  - abs(get_parent().get_child(0).position)< abs(hitPos): 
+			#queue_free() 
 		returning(delta)
 		
 	
@@ -35,8 +38,7 @@ func throwing(delta):
 func returning(delta):
 	look_at(get_parent().get_child(0).position)
 	position += (transform.x * speed * delta)
-	#if position.x < get_parent().get_child(0).position.x:
-		#queue_free()	
+	
 					
 
 
