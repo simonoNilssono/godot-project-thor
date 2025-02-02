@@ -7,6 +7,9 @@ var targetPos : Vector2
 var startPos : Vector2
 enum State {Swung, Thrown, Returning}
 var current_state = State
+
+@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	Global.startSwing.connect(_on_swing_timer_start)
@@ -18,16 +21,13 @@ func _physics_process(delta: float) -> void:
 		throwing(delta)
 	if current_state == State.Returning:
 		returning(delta)
-		if abs(position.x-get_parent().get_child(0).position.x) < abs(2):
-			print(position)
-			queue_free()
+		
 	
 			
 #Throwing hammer towards target			
 func throwing(delta):
 	position += (transform.x * speed * delta)		
-	if abs(position.x-get_parent().get_child(0).position.x
-	) > abs(targetPos.x-get_parent().get_child(0).position.x):
+	if abs(position.x-startPos.x) > abs(targetPos.x-startPos.x):
 		
 		current_state = State.Returning
 		
@@ -61,6 +61,7 @@ func _on_swing_timer_timeout() -> void:
 
 func _on_throw_timer_start(mouseDirX,mousePos):
 	$ThrowTimer.start()
+	animated_sprite_2d.play("throw")
 	current_state = State.Thrown
 	look_at(get_global_mouse_position())
 	targetPos = get_global_mouse_position()

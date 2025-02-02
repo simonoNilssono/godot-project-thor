@@ -1,10 +1,39 @@
-[gd_scene load_steps=4 format=3 uid="uid://dsw1fa6kn82eg"]
+[gd_scene load_steps=8 format=3 uid="uid://dsw1fa6kn82eg"]
 
 [ext_resource type="Script" path="res://Scripts/hammer.gd" id="1_xw8ak"]
-[ext_resource type="Texture2D" uid="uid://kf52anhb6b1p" path="res://Sprites/icon.svg" id="2_paj6q"]
+[ext_resource type="Texture2D" uid="uid://3171raopg10h" path="res://Sprites/ThorSpritesheet.png" id="2_4dj8x"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ye1c8"]
 size = Vector2(20, 36)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mr8k2"]
+atlas = ExtResource("2_4dj8x")
+region = Rect2(80, 100, 80, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5eyxw"]
+atlas = ExtResource("2_4dj8x")
+region = Rect2(160, 100, 80, 50)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_smdjd"]
+atlas = ExtResource("2_4dj8x")
+region = Rect2(240, 100, 80, 50)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vcn73"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mr8k2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5eyxw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smdjd")
+}],
+"loop": true,
+"name": &"throw",
+"speed": 15.0
+}]
 
 [node name="Hammer" type="Area2D"]
 collision_layer = 2
@@ -14,11 +43,6 @@ script = ExtResource("1_xw8ak")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ye1c8")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(5.51013e-40, 0)
-scale = Vector2(0.21875, 0.289063)
-texture = ExtResource("2_paj6q")
-
 [node name="SwingTimer" type="Timer" parent="."]
 wait_time = 0.1
 one_shot = true
@@ -26,6 +50,10 @@ one_shot = true
 [node name="ThrowTimer" type="Timer" parent="."]
 wait_time = 10.488
 one_shot = true
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_vcn73")
+animation = &"throw"
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
