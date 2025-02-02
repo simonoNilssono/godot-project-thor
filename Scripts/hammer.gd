@@ -22,21 +22,18 @@ func _physics_process(delta: float) -> void:
 #Throwing hammer towards target			
 func throwing(delta):
 	position += (transform.x * speed * delta)		
-	if abs(position.x) > abs(targetPos.x):
+	if abs(position.x-get_parent().get_child(0).position.x
+	) > abs(targetPos.x-get_parent().get_child(0).position.x):
 		
-		print("hammerpos: " , abs(position.x) )
-		print("targetpos: " ,abs(targetPos.x))
 		current_state = State.Returning
 #Return hammer to player
 func returning(delta):
 	look_at(get_parent().get_child(0).position)
 	position += (transform.x * speed * delta)
-	if position.x < get_parent().get_child(0).position.x:
-		queue_free()	
+	#if position.x < get_parent().get_child(0).position.x:
+		#queue_free()	
 					
-# placeholder
-func _on_area_entered(area: Area2D) -> void:
-	print("area entered hammer")
+
 
 
 func _on_body_entered(body: Node2D) -> void:
@@ -44,8 +41,11 @@ func _on_body_entered(body: Node2D) -> void:
 		body.deathProcess()
 		body.queue_free()
 	if body.is_in_group("Terrain") and current_state == State.Thrown:
-		queue_free()
-		$ThrowTimer.emit_signal("timeout")	
+		print("hesdf")
+		current_state = State.Returning
+	if body.is_in_group("Player") and current_state == State.Returning:
+		queue_free()	
+		
 		
 func _on_swing_timer_start():
 	$SwingTimer.start()
@@ -61,7 +61,7 @@ func _on_throw_timer_start(mouseDirX,mousePos):
 	look_at(get_global_mouse_position())
 	targetPos = get_global_mouse_position()
 	
-	startPos = position	
+	startPos = get_parent().get_child(0).position	
 	direction = mouseDirX
 func _on_throw_timer_timeout() -> void:
 	queue_free()
