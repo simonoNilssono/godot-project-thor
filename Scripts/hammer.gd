@@ -18,6 +18,10 @@ func _physics_process(delta: float) -> void:
 		throwing(delta)
 	if current_state == State.Returning:
 		returning(delta)
+		if abs(position.x-get_parent().get_child(0).position.x) < abs(2):
+			print(position)
+			queue_free()
+	
 			
 #Throwing hammer towards target			
 func throwing(delta):
@@ -26,6 +30,7 @@ func throwing(delta):
 	) > abs(targetPos.x-get_parent().get_child(0).position.x):
 		
 		current_state = State.Returning
+		
 #Return hammer to player
 func returning(delta):
 	look_at(get_parent().get_child(0).position)
@@ -41,11 +46,10 @@ func _on_body_entered(body: Node2D) -> void:
 		body.deathProcess()
 		body.queue_free()
 	if body.is_in_group("Terrain") and current_state == State.Thrown:
-		print("hesdf")
 		current_state = State.Returning
 	if body.is_in_group("Player") and current_state == State.Returning:
 		queue_free()	
-		
+	
 		
 func _on_swing_timer_start():
 	$SwingTimer.start()
