@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://mi2mv30v3ao6"]
+
+[ext_resource type="Script" path="res://Scripts/death_anim.gd" id="1_mrl5p"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_hbwu0"]
+particle_flag_disable_z = true
+angle_min = -170.3
+angle_max = 123.9
+radial_velocity_min = 21.51
+radial_velocity_max = 193.55
+gravity = Vector3(0, 98, 0)
+
+[node name="DeathAnim" type="Node2D"]
+script = ExtResource("1_mrl5p")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+emitting = false
+amount = 30
+sub_emitter = NodePath(".")
+process_material = SubResource("ParticleProcessMaterial_hbwu0")
+one_shot = true
+explosiveness = 1.0
+
+[connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]

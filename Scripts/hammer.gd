@@ -32,6 +32,7 @@ func _on_area_entered(area: Area2D) -> void:
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Enemies"):
+		body.deathProcess()
 		body.queue_free()
 	if body.is_in_group("Terrain") and current_state == State.Thrown:
 		queue_free()
