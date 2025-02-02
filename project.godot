@@ -79,3 +79,4 @@ SwingHammer={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+environment/defaults/default_clear_color=Color(0.152393, 0.239027, 0.669703, 1)
