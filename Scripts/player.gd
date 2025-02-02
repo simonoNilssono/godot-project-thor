@@ -13,6 +13,7 @@ const JUMP_VELOCITY = -300.0
 
 enum State {Jump, Idle, Run, Attack}
 var current_state: State
+var hammerLess = false
 # single input events handled here
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Spawn Enemy"):
@@ -30,6 +31,7 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("Left", "Right")
 	# Accel or deccel in desired direction depending on input
 	accelOrDeccel(direction, delta)
+	
 	updateAnimations(direction)
 	
 	
@@ -60,8 +62,10 @@ func mousePos() -> Vector2:
 #Acceleration depending on input or no input	
 func accelOrDeccel(direction, delta):
 	if direction != 0:
+		current_state = State.Run
 		velocity.x = move_toward(velocity.x,SPEED*direction, ACCELERATION*delta)	
 	else:
+		current_state = State.Idle
 		velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
 		
 #gravity
@@ -72,9 +76,11 @@ func addGravity(delta:float)-> void:
 #High or short jump depending on if key is held 		
 func handleJump(delta:float)-> void:
 	if Input.is_action_just_pressed("Up") and is_on_floor():
+		current_state = State.Jump
 		velocity.y = JUMP_VELOCITY
 	else:
 		if Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
+			current_state = State.Jump
 			velocity.y = JUMP_VELOCITY /2
 			
 #Instantiate new hammer scene(hitbox)
@@ -94,20 +100,35 @@ func instantiateHammer(mouseDirX):
 func hammerThrow(mouseDirX,mousePos) -> void:
 		instantiateHammer(mouseDirX()).position += Vector2(0,-25)		
 		Global.startThrow.emit(mouseDirX,mousePos)
+		hammerLess = true
 
 
 #Swing hammer left or right depending on mouse pos (+ or - 1)
 func hammerSwing(mouseDirX):	
 	instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*32,-20)
 	Global.startSwing.emit()
+	current_state = State.Attack
+	animated_sprite_2d.play("swing")
+	
+		
 	
 #Animations					
 func updateAnimations(direction):
-		if direction !=0:
-			animated_sprite_2d.scale.x = direction
-			animated_sprite_2d.play("run")
-		else:
-			animated_sprite_2d.play("idle")
-		if not is_on_floor():
-			animated_sprite_2d.play("jump")	
-				
+	if not hammerLess:
+		if not (animated_sprite_2d.animation == "swing" and animated_sprite_2d.is_playing()):
+			if direction == 0:
+				animated_sprite_2d.play("idle")
+			else: 
+				animated_sprite_2d.scale.x = direction
+				animated_sprite_2d.play("run")
+			if not is_on_floor():
+				animated_sprite_2d.play("jump")	
+	else:
+		if not (animated_sprite_2d.animation == "swing" and animated_sprite_2d.is_playing()):
+			if direction == 0:
+				animated_sprite_2d.play("idle_hammerless")
+			else: 
+				animated_sprite_2d.scale.x = direction
+				animated_sprite_2d.play("run_hammerless")
+			if not is_on_floor():
+				animated_sprite_2d.play("jump_hammerless")			

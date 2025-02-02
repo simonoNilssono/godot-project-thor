@@ -226,6 +226,4 @@ shape = SubResource("RectangleShape2D_we3n4")
 position = Vector2(0.5, -25)
 sprite_frames = SubResource("SpriteFrames_mm36x")
 animation = &"swing"
-frame = 3
-frame_progress = 0.188744
 flip_h = true
