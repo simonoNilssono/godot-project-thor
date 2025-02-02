@@ -3,7 +3,7 @@ extends CharacterBody2D
 #WIP
 const ENEMY_SCENE = preload("res://Scenes/enemy.tscn")
 
-const HAMMER_SCENE = preload("res://hammer.tscn")
+const HAMMER_SCENE = preload("res://Scenes/hammer.tscn")
 const ACCELERATION = 30000
 const FRICTION = 30000
 const SPEED = 100.0
@@ -84,9 +84,9 @@ func handleJump(delta:float)-> void:
 			
 #Instantiate new hammer scene(hitbox)
 func instantiateHammer(mouseDirX):
+	
 	#flip player if needed	
 	animated_sprite_2d.scale.x = mouseDirX	# move to updateAnimations, remove reduntancies 
-	
 	
 	var hammer = HAMMER_SCENE.instantiate()
 	hammer.position = global_position
@@ -97,6 +97,7 @@ func instantiateHammer(mouseDirX):
 
 #Throw hammer from the correct position	
 func hammerThrow(mouseDirX,mousePos) -> void:
+		
 		instantiateHammer(mouseDirX()).position += Vector2(0,-25)		
 		Global.startThrow.emit(mouseDirX,mousePos)
 		hammerLess = true
@@ -105,10 +106,11 @@ func hammerThrow(mouseDirX,mousePos) -> void:
 #Swing hammer left or right depending on mouse pos (+ or - 1)
 func hammerSwing(mouseDirX):	
 	if not hammerLess:
-		instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*32,-20)
-		Global.startSwing.emit()
-		animated_sprite_2d.play("swing")
-		$Timer.start()
+		if $Timer.is_stopped():
+			instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*32,-20)
+			Global.startSwing.emit()
+			animated_sprite_2d.play("swing")
+			$Timer.start()
 	
 	
 #Animations					
@@ -136,6 +138,6 @@ func updateAnimations(direction):
 
 func _on_timer_timeout() -> void:
 	time +=$Timer.wait_time
-	if time > 0.49:
+	if time > 0.34:
 		animated_sprite_2d.stop()
 		

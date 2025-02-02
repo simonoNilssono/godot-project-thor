@@ -229,7 +229,7 @@ animation = &"swing"
 flip_h = true
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.35
 one_shot = true
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

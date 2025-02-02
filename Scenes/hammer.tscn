@@ -20,7 +20,7 @@ scale = Vector2(0.21875, 0.289063)
 texture = ExtResource("2_paj6q")
 
 [node name="SwingTimer" type="Timer" parent="."]
-wait_time = 0.5
+wait_time = 0.1
 one_shot = true
 
 [node name="ThrowTimer" type="Timer" parent="."]
