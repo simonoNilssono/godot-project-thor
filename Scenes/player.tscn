@@ -227,3 +227,9 @@ position = Vector2(0.5, -25)
 sprite_frames = SubResource("SpriteFrames_mm36x")
 animation = &"swing"
 flip_h = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

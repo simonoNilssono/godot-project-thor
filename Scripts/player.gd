@@ -11,9 +11,12 @@ const JUMP_VELOCITY = -300.0
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
-enum State {Jump, Idle, Run, Attack}
-var current_state: State
+
 var hammerLess = false
+var time = 0.0
+
+func _ready():
+	pass
 # single input events handled here
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("Spawn Enemy"):
@@ -62,10 +65,8 @@ func mousePos() -> Vector2:
 #Acceleration depending on input or no input	
 func accelOrDeccel(direction, delta):
 	if direction != 0:
-		current_state = State.Run
 		velocity.x = move_toward(velocity.x,SPEED*direction, ACCELERATION*delta)	
 	else:
-		current_state = State.Idle
 		velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
 		
 #gravity
@@ -76,11 +77,9 @@ func addGravity(delta:float)-> void:
 #High or short jump depending on if key is held 		
 func handleJump(delta:float)-> void:
 	if Input.is_action_just_pressed("Up") and is_on_floor():
-		current_state = State.Jump
 		velocity.y = JUMP_VELOCITY
 	else:
 		if Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
-			current_state = State.Jump
 			velocity.y = JUMP_VELOCITY /2
 			
 #Instantiate new hammer scene(hitbox)
@@ -107,10 +106,9 @@ func hammerThrow(mouseDirX,mousePos) -> void:
 func hammerSwing(mouseDirX):	
 	instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*32,-20)
 	Global.startSwing.emit()
-	current_state = State.Attack
 	animated_sprite_2d.play("swing")
+	$Timer.start()
 	
-		
 	
 #Animations					
 func updateAnimations(direction):
@@ -123,6 +121,7 @@ func updateAnimations(direction):
 				animated_sprite_2d.play("run")
 			if not is_on_floor():
 				animated_sprite_2d.play("jump")	
+				
 	else:
 		if not (animated_sprite_2d.animation == "swing" and animated_sprite_2d.is_playing()):
 			if direction == 0:
@@ -132,3 +131,12 @@ func updateAnimations(direction):
 				animated_sprite_2d.play("run_hammerless")
 			if not is_on_floor():
 				animated_sprite_2d.play("jump_hammerless")			
+
+
+func _on_timer_timeout() -> void:
+	time +=$Timer.wait_time
+	print(time)
+	print(animated_sprite_2d.frame)
+	if time > 0.49:
+		animated_sprite_2d.stop()
+		print("stopped")
