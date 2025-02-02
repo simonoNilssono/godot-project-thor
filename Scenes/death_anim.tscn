@@ -20,5 +20,6 @@ sub_emitter = NodePath(".")
 process_material = SubResource("ParticleProcessMaterial_hbwu0")
 one_shot = true
 explosiveness = 1.0
+fixed_fps = 60
 
 [connection signal="finished" from="GPUParticles2D" to="." method="_on_gpu_particles_2d_finished"]

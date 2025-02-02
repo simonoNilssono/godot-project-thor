@@ -15,16 +15,25 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	if current_state == State.Thrown:
-		position += (transform.x * speed * delta)		
-		if position.x > targetPos.x:
-			current_state = State.Returning
-			
+		throwing(delta)
 	if current_state == State.Returning:
-		look_at(get_parent().get_child(0).position)
-		position += (transform.x * speed * delta)
-		if position.x < get_parent().get_child(0).position.x:
-			queue_free()
+		returning(delta)
 			
+#Throwing hammer towards target			
+func throwing(delta):
+	position += (transform.x * speed * delta)		
+	if abs(position.x) > abs(targetPos.x):
+		
+		print("hammerpos: " , abs(position.x) )
+		print("targetpos: " ,abs(targetPos.x))
+		current_state = State.Returning
+#Return hammer to player
+func returning(delta):
+	look_at(get_parent().get_child(0).position)
+	position += (transform.x * speed * delta)
+	if position.x < get_parent().get_child(0).position.x:
+		queue_free()	
+					
 # placeholder
 func _on_area_entered(area: Area2D) -> void:
 	print("area entered hammer")
