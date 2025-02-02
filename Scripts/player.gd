@@ -107,7 +107,7 @@ func hammerThrow(mouseDirX,mousePos) -> void:
 func hammerSwing(mouseDirX):	
 	if not hammerLess:
 		if $Timer.is_stopped():
-			instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*32,-20)
+			instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*26,-20)
 			Global.startSwing.emit()
 			animated_sprite_2d.play("swing")
 			$Timer.start()

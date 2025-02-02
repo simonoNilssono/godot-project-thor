@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://kf52anhb6b1p" path="res://Sprites/icon.svg" id="2_paj6q"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ye1c8"]
-size = Vector2(28, 36)
+size = Vector2(20, 36)
 
 [node name="Hammer" type="Area2D"]
 collision_layer = 2
@@ -15,6 +15,7 @@ script = ExtResource("1_xw8ak")
 shape = SubResource("RectangleShape2D_ye1c8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
 position = Vector2(5.51013e-40, 0)
 scale = Vector2(0.21875, 0.289063)
 texture = ExtResource("2_paj6q")
