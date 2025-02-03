@@ -2,12 +2,12 @@ extends CharacterBody2D
 
 const DEATH_SCENE = preload("res://Scenes/death_anim.tscn")
 const SPEED = 50.0
-
 var player : Node2D
-
 var playerDirection : float
 var direction = Vector2.ZERO
+
 func _ready():
+	# make a variable with player node for ez access later
 	player = get_parent().get_child(1).get_child(0)
 
 func _physics_process(delta: float) -> void:

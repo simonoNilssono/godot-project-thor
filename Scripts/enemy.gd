@@ -9,6 +9,7 @@ var player : Node2D
 var playerDirection : float
 var direction = Vector2.ZERO
 func _ready():
+	# make a variable with player node for ez access later
 	player = get_parent().get_child(1).get_child(0)
 	
 	
