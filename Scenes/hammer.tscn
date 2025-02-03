@@ -52,8 +52,10 @@ wait_time = 10.488
 one_shot = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-38, -24)
 sprite_frames = SubResource("SpriteFrames_vcn73")
 animation = &"throw"
+centered = false
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
