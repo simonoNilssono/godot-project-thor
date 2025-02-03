@@ -26,12 +26,14 @@ func _process(delta: float) -> void:
 	
 func spawnEnemy1(direction):
 	var enemy = ENEMY_SCENE.instantiate()
-	enemy.position.y = get_parent().position.y +50
-	enemy.position.x = direction *((get_viewport_rect().size / 16).x)
+	if direction > 0:
+		enemy.position = $Marker1.position
+	else:
+		enemy.position = $Marker2.position
 	get_tree().root.add_child(enemy)
-	print(((get_viewport_rect().size / 16).x))
+	
 
 func _on_spawn_timer_timeout() -> void:
-	#direction *= -1
+	direction *= -1
 	spawnEnemy1(direction)
 	

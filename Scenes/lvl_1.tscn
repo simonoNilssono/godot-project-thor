@@ -18,4 +18,10 @@ polygon = PackedVector2Array(-1, -1, 17, 0, 17, 249, 97, 248, 188, 210, 309, 210
 
 [node name="SpawnTimer" type="Timer" parent="."]
 
+[node name="Marker1" type="Marker2D" parent="."]
+position = Vector2(38, 227)
+
+[node name="Marker2" type="Marker2D" parent="."]
+position = Vector2(424, 227)
+
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
