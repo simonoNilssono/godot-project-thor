@@ -4,6 +4,7 @@ extends Node2D
 const ENEMY_SCENE = preload("res://Scenes/enemy.tscn")
 var spawnPos1: Vector2
 var time: float
+
 var direction = 1
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -32,7 +33,7 @@ func spawnEnemy1(direction):
 		enemy.position = $Marker2.position
 	get_tree().root.add_child(enemy)
 	
-
+# every second flip spawn location, spawn enemy
 func _on_spawn_timer_timeout() -> void:
 	direction *= -1
 	spawnEnemy1(direction)
