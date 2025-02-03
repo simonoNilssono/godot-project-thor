@@ -1,12 +1,12 @@
 extends CharacterBody2D
 
 const DEATH_SCENE = preload("res://Scenes/death_anim.tscn")
-const SPEED = 10.0
+const SPEED = 800.0
 const JUMP_VELOCITY = -400.0
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 var player : Node2D
 
-var target_velocity =  Vector2.ZERO
+var playerDirection : float
 var direction = Vector2.ZERO
 func _ready():
 	player = get_parent().get_child(1).get_child(0)
@@ -31,8 +31,11 @@ func _physics_process(delta: float) -> void:
 func move2wardsPlayer(delta):
 	if is_on_floor():	
 		#set direction towards the player
-		direction.x = player.position.x - global_position.x
-		
+		playerDirection = player.position.x - global_position.x
+		if playerDirection >= 0:
+			direction.x = 1
+		else:
+			direction.x = -1	
 		#if needed flip sprite
 		if direction.x < 0:
 			animated_sprite_2d.flip_h = true
@@ -40,8 +43,7 @@ func move2wardsPlayer(delta):
 			animated_sprite_2d.flip_h = false	
 		
 		#move	
-		target_velocity.x = direction.x * SPEED
-		velocity =  target_velocity* delta
+		velocity = direction * SPEED * delta
 
 #add gravity	
 func addGravity(delta):
