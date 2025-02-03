@@ -7,7 +7,7 @@
 script = ExtResource("1_enerb")
 
 [node name="Player" parent="." instance=ExtResource("2_auyrg")]
-position = Vector2(41, 242)
+position = Vector2(238, 203)
 
 [node name="ground" type="StaticBody2D" parent="." groups=["Terrain"]]
 
@@ -15,3 +15,7 @@ position = Vector2(41, 242)
 polygon = PackedVector2Array(-1, -1, 17, 0, 17, 249, 97, 248, 188, 210, 309, 210, 354, 244, 449, 244, 449, 0, 480, 0, 478, 269, 0, 269)
 
 [node name="Polygon2D" type="Polygon2D" parent="ground/CollisionPolygon2D"]
+
+[node name="SpawnTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
