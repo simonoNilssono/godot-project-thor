@@ -36,11 +36,7 @@ func move2wardsPlayer(delta):
 			direction.x = 1
 		else:
 			direction.x = -1	
-		#if needed flip sprite
-		if direction.x < 0:
-			animated_sprite_2d.flip_h = true
-		else:
-			animated_sprite_2d.flip_h = false	
+		animated_sprite_2d.scale.x = direction.x
 		
 		#move	
 		velocity = direction * SPEED * delta
