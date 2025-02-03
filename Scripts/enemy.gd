@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 const DEATH_SCENE = preload("res://Scenes/death_anim.tscn")
 const SPEED = 3000.0
-const JUMP_VELOCITY = -400.0
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 var player : Node2D
 

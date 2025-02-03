@@ -24,4 +24,11 @@ position = Vector2(38, 227)
 [node name="Marker2" type="Marker2D" parent="."]
 position = Vector2(424, 227)
 
+[node name="Marker3" type="Marker2D" parent="."]
+position = Vector2(385, 15)
+
+[node name="SpawnBird" type="Timer" parent="."]
+wait_time = 3.0
+
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="timeout" from="SpawnBird" to="." method="_on_spawn_bird_timeout"]

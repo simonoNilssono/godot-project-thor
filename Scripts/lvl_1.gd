@@ -2,6 +2,7 @@ extends Node2D
 @onready var ground: Polygon2D = $ground/CollisionPolygon2D/Polygon2D
 @onready var groundCollision: CollisionPolygon2D = $ground/CollisionPolygon2D
 const ENEMY_SCENE = preload("res://Scenes/enemy.tscn")
+const BIRD_SCENE = preload("res://Scenes/enemy_2.tscn")
 var spawnPos1: Vector2
 var time: float
 
@@ -13,7 +14,7 @@ func _ready() -> void:
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	$SpawnTimer.start()
-	
+	$SpawnBird.start()
 # single input events handled here
 func _input(event):
 	if event.is_action_pressed("quit"):
@@ -24,7 +25,7 @@ func _input(event):
 func _process(delta: float) -> void:
 	pass
 	
-	
+# spawn goblin enemy	
 func spawnEnemy1(direction):
 	var enemy = ENEMY_SCENE.instantiate()
 	if direction > 0:
@@ -32,9 +33,20 @@ func spawnEnemy1(direction):
 	else:
 		enemy.position = $Marker2.position
 	get_tree().root.add_child(enemy)
+
+# spawn goblin enemy	
+func spawnEnemy2(direction):
+	var enemy = BIRD_SCENE.instantiate()
+	enemy.position = $Marker3.position
+	get_tree().root.add_child(enemy)
+
 	
 # every second flip spawn location, spawn enemy
 func _on_spawn_timer_timeout() -> void:
 	direction *= -1
 	spawnEnemy1(direction)
 	
+
+# spawn bird, direciton used for animation flipping
+func _on_spawn_bird_timeout() -> void:
+	spawnEnemy2(direction)
