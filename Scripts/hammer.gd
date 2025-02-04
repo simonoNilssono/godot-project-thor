@@ -6,8 +6,8 @@ var direction: int
 var targetPos : Vector2
 var startPos : Vector2
 enum State {Swung, Thrown, Returning}
-var current_state = State
-var hitPos=  Vector2(5,5)
+var current_state : State
+
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 # Called when the node enters the scene tree for the first time.
@@ -17,11 +17,17 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
+	if current_state == State.Swung:
+		swinging()
 	if current_state == State.Thrown:
 		throwing(delta)
 	if current_state == State.Returning:	
 		returning(delta)
 		
+#make hammer swing hitbox follow player and not be stuck in one place
+func swinging():
+	position = get_parent().get_child(0).position 
+	position += Vector2(direction*28,-20)
 					
 #Throwing hammer towards target			
 func throwing(delta):
@@ -61,6 +67,8 @@ func _on_body_entered(body: Node2D) -> void:
 func _on_swing_timer_start():
 	$SwingTimer.start()
 	current_state = State.Swung
+	
+	#hide the spinning sprite during swing
 	animated_sprite_2d.visible = not animated_sprite_2d.visible
 	
 # end swing	
@@ -68,14 +76,18 @@ func _on_swing_timer_timeout() -> void:
 	queue_free()
 
 #start throw, initialize variables used in flight
-func _on_throw_timer_start(mouseDirX,mousePos):
+func _on_throw_timer_start():
 	$ThrowTimer.start()
 	animated_sprite_2d.play("throw")
 	current_state = State.Thrown
+	
+	#initial rotation towards target
 	look_at(get_global_mouse_position())
+	#assign a target position
 	targetPos = get_global_mouse_position()
+	#assign start position
 	startPos = get_parent().get_child(0).position	
-	direction = mouseDirX
+	
 
 # delete if hammer survives too long, rarely used	
 func _on_throw_timer_timeout() -> void:

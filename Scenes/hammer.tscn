@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://dsw1fa6kn82eg"]
+[gd_scene load_steps=9 format=3 uid="uid://dsw1fa6kn82eg"]
 
 [ext_resource type="Script" path="res://Scripts/hammer.gd" id="1_xw8ak"]
 [ext_resource type="Texture2D" uid="uid://3171raopg10h" path="res://Sprites/ThorSpritesheet.png" id="2_4dj8x"]
+[ext_resource type="Texture2D" uid="uid://kf52anhb6b1p" path="res://Sprites/icon.svg" id="3_s68ym"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ye1c8"]
 size = Vector2(22, 36)
@@ -44,7 +45,7 @@ script = ExtResource("1_xw8ak")
 shape = SubResource("RectangleShape2D_ye1c8")
 
 [node name="SwingTimer" type="Timer" parent="."]
-wait_time = 0.2
+wait_time = 0.3
 one_shot = true
 
 [node name="ThrowTimer" type="Timer" parent="."]
@@ -56,6 +57,12 @@ position = Vector2(-38, -24)
 sprite_frames = SubResource("SpriteFrames_vcn73")
 animation = &"throw"
 centered = false
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(5.96046e-07, 2.38419e-07)
+scale = Vector2(0.171875, 0.28125)
+texture = ExtResource("3_s68ym")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
