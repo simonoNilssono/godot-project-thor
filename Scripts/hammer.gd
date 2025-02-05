@@ -57,6 +57,7 @@ func _on_body_entered(body: Node2D) -> void:
 	#return if hit wall	
 	if body.is_in_group("Terrain") and current_state == State.Thrown:
 		current_state = State.Returning
+		
 	#if hammered returned, delete instance	
 	if body.is_in_group("Player") and current_state == State.Returning:
 		Global.hammerReturned.emit()

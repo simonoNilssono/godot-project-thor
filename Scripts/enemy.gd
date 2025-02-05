@@ -13,21 +13,23 @@ func _ready():
 	player = get_parent().get_child(1).get_child(0)
 	
 	
-	
 func _process(delta):
 	updateAnimations()
-	
-func deathProcess():
-	var death_scene = DEATH_SCENE.instantiate()
-	death_scene.position = global_position
-	get_tree().root.add_child(death_scene)
-	
+
 
 func _physics_process(delta: float) -> void:
 	addGravity(delta)
 	move2wardsPlayer(delta)
 	move_and_slide()
-
+	
+	
+#play death explosion 	
+func deathProcess():
+	var death_scene = DEATH_SCENE.instantiate()
+	death_scene.position = global_position
+	get_tree().root.add_child(death_scene)
+	
+	
 # Enemy moves toward player along the floor
 func move2wardsPlayer(delta):
 	if is_on_floor():	
