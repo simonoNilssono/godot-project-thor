@@ -28,6 +28,18 @@ func _physics_process(delta: float) -> void:
 func swinging():
 	position = get_parent().get_child(0).position 
 	position += Vector2(direction*28,-20)
+	
+#Start swing, hide hammer sprite		
+func _on_swing_timer_start():
+	$SwingTimer.start()
+	current_state = State.Swung
+	
+	#hide the spinning sprite during swing
+	animated_sprite_2d.visible = not animated_sprite_2d.visible
+	
+# end swing	
+func _on_swing_timer_timeout() -> void:
+	queue_free()	
 					
 #Throwing hammer towards target			
 func throwing(delta):
@@ -48,34 +60,7 @@ func returning(delta):
 		Global.hammerReturned.emit()
 		queue_free() 
 
-#detect collisions					
-func _on_body_entered(body: Node2D) -> void:
-	if body.is_in_group("Enemies"):
-		body.deathProcess()
-		body.queue_free()
-	
-	#return if hit wall	
-	if body.is_in_group("Terrain") and current_state == State.Thrown:
-		current_state = State.Returning
 		
-	#if hammered returned, delete instance	
-	if body.is_in_group("Player") and current_state == State.Returning:
-		Global.hammerReturned.emit()
-		queue_free()	
-	
-
-#Start swing, hide hammer sprite		
-func _on_swing_timer_start():
-	$SwingTimer.start()
-	current_state = State.Swung
-	
-	#hide the spinning sprite during swing
-	animated_sprite_2d.visible = not animated_sprite_2d.visible
-	
-# end swing	
-func _on_swing_timer_timeout() -> void:
-	queue_free()
-
 #start throw, initialize variables used in flight
 func _on_throw_timer_start():
 	$ThrowTimer.start()
@@ -94,3 +79,19 @@ func _on_throw_timer_start():
 func _on_throw_timer_timeout() -> void:
 	Global.hammerReturned.emit()
 	queue_free()
+	
+	
+#detect collisions					
+func _on_body_entered(body: Node2D) -> void:
+	if body.is_in_group("Enemies"):
+		body.deathProcess()
+		body.queue_free()
+	
+	#return if hit wall	
+	if body.is_in_group("Terrain") and current_state == State.Thrown:
+		current_state = State.Returning
+		
+	#if hammered returned, delete instance	
+	if body.is_in_group("Player") and current_state == State.Returning:
+		Global.hammerReturned.emit()
+		queue_free()
