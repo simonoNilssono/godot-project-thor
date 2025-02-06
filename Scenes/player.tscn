@@ -229,8 +229,13 @@ sprite_frames = SubResource("SpriteFrames_mm36x")
 animation = &"swing"
 flip_h = true
 
-[node name="Timer" type="Timer" parent="."]
+[node name="SwingTimer" type="Timer" parent="."]
 wait_time = 0.35
 one_shot = true
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="ThrowTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[connection signal="timeout" from="SwingTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="ThrowTimer" to="." method="_on_throw_timer_timeout"]

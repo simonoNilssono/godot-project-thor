@@ -22,7 +22,8 @@ func _input(event: InputEvent) -> void:
 	if not hammerLess:	
 		if event.is_action_pressed("SwingHammer"):
 			hammerSwing(mouseDirX())
-		if event.is_action_pressed("Throw Hammer") and animated_sprite_2d.animation != "swing":
+		if event.is_action_pressed("Throw Hammer") and animated_sprite_2d.animation != "swing
+		" and $ThrowTimer.is_stopped():
 			hammerThrow(mouseDirX())
 	
 # physics dependent events here	(most stuff is)
@@ -91,11 +92,11 @@ func hammerThrow(mouseDirX) -> void:
 #Swing hammer left or right depending on mouse pos (+ or - 1)
 func hammerSwing(mouseDirX):	
 	if not hammerLess:
-		if $Timer.is_stopped():
+		if $SwingTimer.is_stopped():
 			instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*28,-20)
 			Global.startSwing.emit()
 			animated_sprite_2d.play("swing")
-			$Timer.start()
+			$SwingTimer.start()
 	
 	
 #Animations					
@@ -122,9 +123,14 @@ func updateAnimations(direction,mouseDirX):
 
 # stop looping hit animation 
 func _on_timer_timeout() -> void:
-	time +=$Timer.wait_time
+	time +=$SwingTimer.wait_time
 	if time > 0.34:
 		animated_sprite_2d.stop()
 		
 func _on_hammer_returned():
+	$ThrowTimer.start()
 	hammerLess = false
+
+
+func _on_throw_timer_timeout() -> void:
+	pass # Replace with function body.
