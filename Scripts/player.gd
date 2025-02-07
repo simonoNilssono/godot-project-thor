@@ -21,26 +21,29 @@ func _ready():
 func _input(event: InputEvent) -> void:	
 	if not hammerLess:	
 		if event.is_action_pressed("SwingHammer"):
-			hammerSwing(mouseDirX())
+			hammerSwing()
 		if event.is_action_pressed("Throw Hammer") and animated_sprite_2d.animation != "swing
 		" and $ThrowCooldown.is_stopped():
-			hammerThrow(mouseDirX())
-	# for future teleport to hammer tech		
+			hammerThrow()
+			
 	if event.is_action_pressed("teleport2Hammer") and hammerLess  == true:
 		teleport2Hammer()
+		
+		
 # physics dependent events here	(most stuff is)
 func _physics_process(delta: float) -> void:
 	# Get the input direction/axis
-	var direction := Input.get_axis("Left", "Right")
+	var inputAxis := Input.get_axis("Left", "Right")
 	
 	addGravity(delta)
 	handleJump(delta)	
-	accelOrDeccel(direction, delta)
-	updateAnimations(direction,mouseDirX())	
+	accelOrDeccel(inputAxis, delta)
+	updateAnimations(inputAxis)	
 	move_and_slide()
-	
+
+
 #Get mouse x direction relative to player and return as an int	
-func mouseDirX() -> int:
+func getMouseDirX() -> int:
 	var mouseDir = 0
 	var mousePosX = get_global_mouse_position().x - global_position.x
 	if mousePosX >=0:
@@ -49,15 +52,12 @@ func mouseDirX() -> int:
 		mouseDir = -1	
 	return mouseDir
 
-#Get mousepos relative to player	
-func mousePos() -> Vector2:
-	var mousePos = get_global_mouse_position() - global_position
-	return mousePos
-	
-#Acceleration depending on input or no input	
-func accelOrDeccel(direction, delta):
-	if direction != 0:
-		velocity.x = move_toward(velocity.x,SPEED*direction, ACCELERATION*delta)	
+#-------------MOVEMENT-------------#
+
+#Accel/deccel depending on input or no input	
+func accelOrDeccel(inputAxis, delta):
+	if inputAxis != 0:
+		velocity.x = move_toward(velocity.x,SPEED*inputAxis, ACCELERATION*delta)	
 	else:
 		velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
 		
@@ -66,64 +66,78 @@ func addGravity(delta:float)-> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 
-#High or short jump depending on if key is held 		
+#High or short jump depending on if key is held
 func handleJump(delta:float)-> void:
 	if Input.is_action_just_pressed("Up") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 	else:
 		if Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
 			velocity.y = JUMP_VELOCITY /2
-			
-#Instantiate new hammer scene(hitbox)
-func instantiateHammer(mouseDirX):
-		
+
+#-----------HAMMER-STUFF-------------#
+
+#Instantiate new hammer scene
+func instantiateHammer():
 	var hammer = HAMMER_SCENE.instantiate()
 	hammer.position = global_position
-	hammer.direction = mouseDirX
 	
-	get_parent().add_child(hammer)	
+	#used in hammer.gd
+	hammer.direction = getMouseDirX()
+	
+	get_parent().add_child(hammer)
 	return hammer
 
-#Throw hammer from the correct position	
-func hammerThrow(mouseDirX) -> void:
-	hammer = instantiateHammer(mouseDirX())	
-	hammer.position += Vector2(0,-25)	
+#Throw hammer from the correct position
+#A variable is created of the instance, used in the teleport script
+func hammerThrow() -> void:
+	hammer = instantiateHammer()
+	hammer.position += Vector2(0,-25)
 	Global.startThrow.emit()
 	hammerLess = true
-		
 
-
-#Swing hammer left or right depending on mouse pos (+ or - 1)
-func hammerSwing(mouseDirX):	
+#Swing hammer left or right depending on mouse dir (+ or - 1)
+func hammerSwing():	
 	if not hammerLess:
 		if $SwingTimer.is_stopped():
-			instantiateHammer(mouseDirX()).position +=  Vector2(mouseDirX*28,-20)
+			instantiateHammer().position += Vector2(getMouseDirX()*28,-20)
 			Global.startSwing.emit()
 			animated_sprite_2d.play("swing")
 			$SwingTimer.start()
-	
-	
-#Animations					
-func updateAnimations(direction,mouseDirX):
-	animated_sprite_2d.scale.x = mouseDirX
+
+#Teleport to hammer 
+func teleport2Hammer():
+	position = hammer.position
+	hammer.queue_free()
+	Global.hammerReturned.emit()
+
+#Hammer is returned to player
+func _on_hammer_returned():
+	$ThrowCooldown.start()
+	hammerLess = false
+
+#------ANIMATIONS-------#
+
+#Update anmimations 
+func updateAnimations(inputAxis):
+	animated_sprite_2d.scale.x = getMouseDirX()
 	if not hammerLess:
 		if not (animated_sprite_2d.animation == "swing" and animated_sprite_2d.is_playing()):
-			if direction == 0:
+			if inputAxis == 0:
 				animated_sprite_2d.play("idle")
 			else: 
-				animated_sprite_2d.scale.x = direction
+				animated_sprite_2d.scale.x = inputAxis
 				animated_sprite_2d.play("run")
 			if not is_on_floor():
 				animated_sprite_2d.play("jump")		
 	else:
 		if not (animated_sprite_2d.animation == "swing" and animated_sprite_2d.is_playing()):
-			if direction == 0:
+			if inputAxis == 0:
 				animated_sprite_2d.play("idle_hammerless")
 			else: 
-				animated_sprite_2d.scale.x = direction
+				animated_sprite_2d.scale.x = inputAxis
 				animated_sprite_2d.play("run_hammerless")
 			if not is_on_floor():
-				animated_sprite_2d.play("jump_hammerless")			
+				animated_sprite_2d.play("jump_hammerless")
 
 # stop looping hit animation 
 func _on_timer_timeout() -> void:
@@ -131,12 +145,3 @@ func _on_timer_timeout() -> void:
 	if time > 0.34:
 		animated_sprite_2d.stop()
 		
-func _on_hammer_returned():
-	$ThrowCooldown.start()
-	hammerLess = false
-
-
-func teleport2Hammer():
-	position = hammer.position
-	hammer.queue_free()
-	Global.hammerReturned.emit()

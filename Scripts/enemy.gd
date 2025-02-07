@@ -13,7 +13,7 @@ func _ready():
 	player = get_parent().get_child(1).get_child(0)
 	
 	
-func _process(delta):
+func _process(_delta):
 	updateAnimations()
 
 

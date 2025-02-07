@@ -7,11 +7,7 @@ func _ready() -> void:
 	Global.hammerReturned.connect(_on_hammer_returned)
 	$ThrowCooldown.visible = false
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-	
-	
+
 # hammer returned from throw, start cooldown	
 func _on_hammer_returned():
 	throwCooldown()

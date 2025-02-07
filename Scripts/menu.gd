@@ -8,14 +8,6 @@ func _ready() -> void:
 	$VBoxContainer/PlayBtn.grab_focus()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
-
-
-
 func _on_play_btn_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/lvl_1.tscn")
 

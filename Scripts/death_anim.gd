@@ -6,10 +6,5 @@ func _ready():
 	$GPUParticles2D.emitting = true
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
-
 func _on_gpu_particles_2d_finished():
 	queue_free()

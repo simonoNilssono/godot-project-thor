@@ -22,20 +22,20 @@ func _input(event):
 		
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	pass
 	
 # spawn goblin enemy	
-func spawnEnemy1(direction):
+func spawnEnemy1(spawnDirection):
 	var enemy = ENEMY_SCENE.instantiate()
-	if direction > 0:
+	if spawnDirection > 0:
 		enemy.position = $Marker1.position
 	else:
 		enemy.position = $Marker2.position
 	get_tree().root.add_child(enemy)
 
 # spawn goblin enemy	
-func spawnEnemy2(direction):
+func spawnEnemy2():
 	var enemy = BIRD_SCENE.instantiate()
 	enemy.position = $Marker3.position
 	get_tree().root.add_child(enemy)
@@ -49,4 +49,4 @@ func _on_spawn_timer_timeout() -> void:
 
 # spawn bird, direciton used for animation flipping
 func _on_spawn_bird_timeout() -> void:
-	spawnEnemy2(direction)
+	spawnEnemy2()
