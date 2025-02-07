@@ -49,7 +49,7 @@ wait_time = 0.33
 one_shot = true
 
 [node name="ThrowTimer" type="Timer" parent="."]
-wait_time = 10.488
+wait_time = 5.0
 one_shot = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

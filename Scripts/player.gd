@@ -23,9 +23,11 @@ func _input(event: InputEvent) -> void:
 		if event.is_action_pressed("SwingHammer"):
 			hammerSwing(mouseDirX())
 		if event.is_action_pressed("Throw Hammer") and animated_sprite_2d.animation != "swing
-		" and $ThrowTimer.is_stopped():
+		" and $ThrowCooldown.is_stopped():
 			hammerThrow(mouseDirX())
-	
+	# for future teleport to hammer tech		
+	if event.is_action_pressed("test") and hammerLess  == true:
+		test()
 # physics dependent events here	(most stuff is)
 func _physics_process(delta: float) -> void:
 	# Get the input direction/axis
@@ -87,6 +89,7 @@ func hammerThrow(mouseDirX) -> void:
 		instantiateHammer(mouseDirX()).position += Vector2(0,-25)		
 		Global.startThrow.emit()
 		hammerLess = true
+		
 
 
 #Swing hammer left or right depending on mouse pos (+ or - 1)
@@ -128,9 +131,11 @@ func _on_timer_timeout() -> void:
 		animated_sprite_2d.stop()
 		
 func _on_hammer_returned():
-	$ThrowTimer.start()
+	$ThrowCooldown.start()
 	hammerLess = false
-
 
 func _on_throw_timer_timeout() -> void:
 	pass # Replace with function body.
+	
+func test():
+	print("hello")
