@@ -10,7 +10,7 @@ const JUMP_VELOCITY = -300.0
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
-
+var hammer
 var hammerLess = false
 var time = 0.0
 
@@ -26,8 +26,8 @@ func _input(event: InputEvent) -> void:
 		" and $ThrowCooldown.is_stopped():
 			hammerThrow(mouseDirX())
 	# for future teleport to hammer tech		
-	if event.is_action_pressed("test") and hammerLess  == true:
-		test()
+	if event.is_action_pressed("teleport2Hammer") and hammerLess  == true:
+		teleport2Hammer()
 # physics dependent events here	(most stuff is)
 func _physics_process(delta: float) -> void:
 	# Get the input direction/axis
@@ -86,9 +86,10 @@ func instantiateHammer(mouseDirX):
 
 #Throw hammer from the correct position	
 func hammerThrow(mouseDirX) -> void:
-		instantiateHammer(mouseDirX()).position += Vector2(0,-25)		
-		Global.startThrow.emit()
-		hammerLess = true
+	hammer = instantiateHammer(mouseDirX())	
+	hammer.position += Vector2(0,-25)	
+	Global.startThrow.emit()
+	hammerLess = true
 		
 
 
@@ -134,8 +135,8 @@ func _on_hammer_returned():
 	$ThrowCooldown.start()
 	hammerLess = false
 
-func _on_throw_timer_timeout() -> void:
-	pass # Replace with function body.
-	
-func test():
-	print("hello")
+
+func teleport2Hammer():
+	position = hammer.position
+	hammer.queue_free()
+	Global.hammerReturned.emit()
