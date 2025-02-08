@@ -6,6 +6,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ioemg"]
 
 [node name="enemy2" type="CharacterBody2D" groups=["Enemies"]]
+collision_layer = 4
+collision_mask = 2
 script = ExtResource("1_kba1e")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

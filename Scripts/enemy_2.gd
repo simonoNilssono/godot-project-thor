@@ -13,7 +13,6 @@ func _ready():
 func _physics_process(delta: float) -> void:
 	move2wardsPlayer(delta,SPEED)
 
-	move_and_slide()
 
 # Enemy moves toward player from wherever it spawns (flying)
 func move2wardsPlayer(delta,speed):
