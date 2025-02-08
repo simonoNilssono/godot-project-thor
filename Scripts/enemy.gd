@@ -13,7 +13,7 @@ func _ready():
 	player = get_parent().get_child(1).get_child(0)
 	
 	
-func _process(_delta):
+func _process(_delta) ->void:
 	updateAnimations()
 
 
@@ -24,14 +24,14 @@ func _physics_process(delta: float) -> void:
 	
 	
 #play death explosion 	
-func deathProcess():
+func deathProcess() -> void:
 	var death_scene = DEATH_SCENE.instantiate()
 	death_scene.position = global_position
 	get_tree().root.add_child(death_scene)
 	
 	
 # Enemy moves toward player along the floor
-func move2wardsPlayer(delta):
+func move2wardsPlayer(delta) -> void:
 	if is_on_floor():	
 		#set direction towards the player
 		playerDirection = player.position.x - global_position.x
@@ -45,10 +45,10 @@ func move2wardsPlayer(delta):
 		velocity = direction * SPEED * delta
 
 #add gravity	
-func addGravity(delta):
+func addGravity(delta) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 		
 		
-func updateAnimations():
+func updateAnimations() -> void:
 	animated_sprite_2d.play("run")	
