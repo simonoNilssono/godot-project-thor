@@ -1,8 +1,7 @@
 extends CharacterBody2D
 
-
-
 const HAMMER_SCENE = preload("res://Scenes/hammer.tscn")
+const TELEPORT_EXPLOSION = preload("res://Scenes/teleport_explosion.tscn")
 const ACCELERATION = 30000
 const FRICTION = 30000
 const SPEED = 100.0
@@ -12,7 +11,6 @@ const JUMP_VELOCITY = -300.0
 
 var hammer : Node2D
 var hammerLess = false
-var time = 0.0
 
 func _ready():
 	Global.hammerReturned.connect(_on_hammer_returned)
@@ -22,17 +20,17 @@ func _input(event: InputEvent) -> void:
 	if not hammerLess:	
 		if event.is_action_pressed("SwingHammer"):
 			hammerSwing()
-		if event.is_action_pressed("Throw Hammer") and animated_sprite_2d.animation != "swing
-		" and $ThrowCooldown.is_stopped():
+		if event.is_action_pressed("Throw Hammer") and $SwingTimer.is_stopped(
+		) and $ThrowCooldown.is_stopped():
 			hammerThrow()
 			
 	if event.is_action_pressed("teleport2Hammer") and hammerLess  == true:
 		teleport2Hammer()
-	
+		
 	if event.is_action_pressed("HoverHammer") and hammerLess == true:
 		Global.hover.emit()	
 		
-# physics dependent events here	(most stuff is)
+# physics dependent events here
 func _physics_process(delta: float) -> void:
 	# Get the input direction/axis
 	var inputAxis := Input.get_axis("Left", "Right")
@@ -106,15 +104,19 @@ func hammerSwing() -> void:
 			animated_sprite_2d.play("swing")
 			$SwingTimer.start()
 
-#Teleport to hammer 
+#Teleport to hammer, instantiate exposion
 func teleport2Hammer() -> void:
 	position = hammer.position
-	hammer.queue_free()
 	Global.hammerReturned.emit()
+	
+	var explosion = TELEPORT_EXPLOSION.instantiate()
+	explosion.position = global_position
+	get_parent().add_child(explosion)
 
 #Hammer is returned to player
 func _on_hammer_returned()-> void:
 	$ThrowCooldown.start()
+	hammer.queue_free()
 	hammerLess = false
 
 #------ANIMATIONS-------#
@@ -143,7 +145,5 @@ func updateAnimations(inputAxis)-> void:
 
 # stop looping hit animation 
 func _on_timer_timeout() -> void:
-	time +=$SwingTimer.wait_time
-	if time > 0.34:
-		animated_sprite_2d.stop()
+	animated_sprite_2d.stop()
 		

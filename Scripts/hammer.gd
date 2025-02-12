@@ -19,6 +19,8 @@ func _ready() -> void:
 	Global.startSwing.connect(_on_swing_timer_start)
 	Global.startThrow.connect(_on_throw_timer_start)
 	Global.hover.connect(_on_hover)
+	
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	match current_state:
@@ -29,7 +31,8 @@ func _physics_process(delta: float) -> void:
 		State.Returning:
 			returning(delta)
 		State.Hover:
-			hovering()	
+			hovering()
+
 #Start swing, hide hammer sprite
 func _on_swing_timer_start() -> void:
 	$SwingTimer.start()
@@ -72,9 +75,10 @@ func throwing(delta) -> void:
 func _on_hover():
 	current_state = State.Hover
 
+# for future functionality
 func hovering():
-	print("hoverbby")
-	
+	pass
+
 #Return hammer to player
 func returning(delta) -> void:
 	look_at(player.position)
@@ -83,7 +87,7 @@ func returning(delta) -> void:
 	#delete instance if to close to body when returning, no more hammer stuck  in ground
 	if abs(position.x-player.position.x) < 5 and abs(position.y-player.position.y) < 5:
 		Global.hammerReturned.emit()
-		queue_free() 
+		
 
 #Return hammer if instance survives the whole timer
 func _on_throw_timer_timeout() -> void:
@@ -102,4 +106,4 @@ func _on_body_entered(body: Node2D) -> void:
 	#if hammer returned, delete instance	
 	if body.is_in_group("Player") and current_state == State.Returning:
 		Global.hammerReturned.emit()
-		queue_free()
+		
