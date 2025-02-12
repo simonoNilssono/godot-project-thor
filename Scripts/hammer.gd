@@ -75,7 +75,7 @@ func throwing(delta) -> void:
 func _on_hover():
 	current_state = State.Hover
 
-# for future functionality
+# for future functionality, maybe emit some particles while hovering
 func hovering():
 	pass
 
