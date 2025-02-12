@@ -16,15 +16,18 @@ func _on_hammer_returned():
 func throwCooldown():
 	$ThrowTimer.start()
 	$ThrowCooldown.visible = true
+	$ThrowCooldown.text = "%.1f" % throwTime
 	
 
 
 #set UI to countdown, reset after reaching 0
 func _on_throw_timer_timeout() -> void:
-	$ThrowCooldown.text = "%.1f" % throwTime
 	throwTime -= $ThrowTimer.wait_time
+	$ThrowCooldown.text = "%.1f" % throwTime
+	print(throwTime)
 	
-	if throwTime < 0:
+	if throwTime < 0.0:
 		$ThrowCooldown.visible = false
 		$ThrowTimer.stop()
 		throwTime = 3.0
+		$ThrowCooldown.text = ""

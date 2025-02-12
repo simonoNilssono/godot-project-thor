@@ -15,7 +15,8 @@ script = ExtResource("1_jiw2y")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
-text = "3"
+text = "
+"
 
 [node name="ThrowTimer" type="Timer" parent="."]
 wait_time = 0.1
