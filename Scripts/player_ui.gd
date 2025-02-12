@@ -1,6 +1,6 @@
 extends Control
 
-var throwTime = 3.0
+var throwTime : float
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,6 +16,7 @@ func _on_hammer_returned():
 func throwCooldown():
 	$ThrowTimer.start()
 	$ThrowCooldown.visible = true
+	throwTime = 1.0
 	$ThrowCooldown.text = "%.1f" % throwTime
 	
 
@@ -24,10 +25,8 @@ func throwCooldown():
 func _on_throw_timer_timeout() -> void:
 	throwTime -= $ThrowTimer.wait_time
 	$ThrowCooldown.text = "%.1f" % throwTime
-	print(throwTime)
 	
 	if throwTime < 0.0:
 		$ThrowCooldown.visible = false
 		$ThrowTimer.stop()
-		throwTime = 3.0
 		$ThrowCooldown.text = ""

@@ -234,7 +234,6 @@ wait_time = 0.35
 one_shot = true
 
 [node name="ThrowCooldown" type="Timer" parent="."]
-wait_time = 3.0
 one_shot = true
 
 [connection signal="timeout" from="SwingTimer" to="." method="_on_timer_timeout"]

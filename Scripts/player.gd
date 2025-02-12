@@ -28,7 +28,9 @@ func _input(event: InputEvent) -> void:
 			
 	if event.is_action_pressed("teleport2Hammer") and hammerLess  == true:
 		teleport2Hammer()
-		
+	
+	if event.is_action_pressed("HoverHammer") and hammerLess == true:
+		Global.hover.emit()	
 		
 # physics dependent events here	(most stuff is)
 func _physics_process(delta: float) -> void:
