@@ -22,7 +22,7 @@ func _on_hammer_returned():
 	#cooldown on buttons
 	
 
-#start cooldowns
+#start cooldowns, set right texture for buttons
 func throwCooldown():
 	$ThrowTimer.start()
 	$RabilityBtn.disabled = false
@@ -33,10 +33,6 @@ func throwCooldown():
 	
 #set UI to countdown, reset after reaching 0
 func _on_throw_timer_timeout() -> void:
-	throwTime -= $ThrowTimer.wait_time
 	
-	if throwTime < 0.0:
-		
-		$ThrowTimer.stop()
-		$RabilityBtn.disabled = true
-		$EabilityBtn.disabled = true
+	$RabilityBtn.disabled = true
+	$EabilityBtn.disabled = true
