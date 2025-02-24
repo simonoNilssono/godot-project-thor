@@ -28,7 +28,7 @@ func _input(event: InputEvent) -> void:
 		teleport2Hammer()
 		
 	if event.is_action_pressed("HoverHammer") and hammerLess == true:
-		Global.hover.emit()	
+		hoverHammer()
 		
 # physics dependent events here
 func _physics_process(delta: float) -> void:
@@ -38,7 +38,8 @@ func _physics_process(delta: float) -> void:
 	addGravity(delta)
 	handleJump()	
 	accelOrDeccel(inputAxis, delta)
-	updateAnimations(inputAxis)	
+	updateAnimations(inputAxis)
+	fly2Hammer(delta)
 	move_and_slide()
 
 
@@ -74,6 +75,14 @@ func handleJump()-> void:
 		if Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
 			velocity.y = JUMP_VELOCITY /2
 
+
+func fly2Hammer(delta) -> void:
+	if Input.is_action_just_pressed("test") and hammerLess == true:
+		look_at(hammer.position)
+		position += (transform.x * 1000 * delta)
+		#Global.hammerReturned.emit()
+
+
 #-----------HAMMER-STUFF-------------#
 
 #Instantiate new hammer scene
@@ -106,12 +115,16 @@ func hammerSwing() -> void:
 
 #Teleport to hammer, instantiate exposion
 func teleport2Hammer() -> void:
+	
 	position = hammer.position
 	Global.hammerReturned.emit()
 	
 	var explosion = TELEPORT_EXPLOSION.instantiate()
 	explosion.position = global_position
 	get_parent().add_child(explosion)
+
+func hoverHammer() -> void:
+	Global.hover.emit()
 
 #Hammer is returned to player
 func _on_hammer_returned()-> void:

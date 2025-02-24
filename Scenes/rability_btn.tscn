@@ -1,0 +1,48 @@
+[gd_scene load_steps=5 format=3 uid="uid://cq0f1ec2pn1cl"]
+
+[ext_resource type="Texture2D" uid="uid://kf52anhb6b1p" path="res://Sprites/icon.svg" id="1_sbjva"]
+[ext_resource type="Texture2D" uid="uid://g3npttih3uhs" path="res://Sprites/icon2.png" id="2_apqnc"]
+[ext_resource type="Script" path="res://Scripts/rability_btn.gd" id="2_cxw3o"]
+[ext_resource type="Texture2D" uid="uid://br8oypkot0rmv" path="res://Sprites/square.png" id="2_isqpc"]
+
+[node name="RabilityBtn" type="TextureButton"]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(0.8, 0.8)
+texture_normal = ExtResource("1_sbjva")
+texture_disabled = ExtResource("2_apqnc")
+ignore_texture_size = true
+stretch_mode = 0
+script = ExtResource("2_cxw3o")
+
+[node name="Cooldown" type="TextureProgressBar" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+step = 0.01
+fill_mode = 5
+nine_patch_stretch = true
+texture_progress = ExtResource("2_isqpc")
+tint_progress = Color(0, 0, 0, 0.54902)
+
+[node name="Key" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+text = "R"
+vertical_alignment = 2
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Panel" type="Panel" parent="."]
+show_behind_parent = true
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0

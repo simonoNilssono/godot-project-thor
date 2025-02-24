@@ -236,5 +236,9 @@ one_shot = true
 [node name="ThrowCooldown" type="Timer" parent="."]
 one_shot = true
 
+[node name="HoverCooldown" type="Timer" parent="."]
+
+[node name="TeleportCooldown" type="Timer" parent="."]
+
 [connection signal="timeout" from="SwingTimer" to="." method="_on_timer_timeout"]
 [connection signal="timeout" from="ThrowCooldown" to="." method="_on_throw_timer_timeout"]
