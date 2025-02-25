@@ -17,7 +17,6 @@ one_shot = true
 
 [node name="RabilityBtn" parent="." instance=ExtResource("2_yrntk")]
 layout_mode = 0
-scale = Vector2(0.8, 0.8)
 disabled = true
 text = "R"
 timer = 1.0

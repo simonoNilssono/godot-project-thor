@@ -5,13 +5,16 @@ extends TextureButton
 
 var time = 1.0
 
-# Called when the node enters the scene tree for the first time.
+#set up variables so that they can be exported and changed in the editor 
+#in the future. 
+#disable process.
 func _ready() -> void:
 	$Key.text = text
 	$Timer.wait_time = timer
 	cooldown.max_value = $Timer.wait_time
 	set_process(false)
 
+#start process (cooldown timer / animation)
 func startTimer():
 	$Timer.start()
 	set_process(true)

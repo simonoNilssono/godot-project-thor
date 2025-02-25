@@ -1,10 +1,10 @@
 extends CharacterBody2D
 
 const DEATH_SCENE = preload("res://Scenes/death_anim.tscn")
-const SPEED = 50.0
+const SPEED = 100.0
 var player : Node2D
 var playerDirection : float
-var direction = Vector2.ZERO
+var xDirection = Vector2.ZERO
 
 func _ready():
 	# make a variable with player node for ez access later
@@ -16,10 +16,11 @@ func _physics_process(delta: float) -> void:
 
 # Enemy moves toward player from wherever it spawns (flying)
 func move2wardsPlayer(delta,speed):
-	#always move toward player	
-	look_at(player.position)
-	position += (transform.x * speed * delta)
 
+	var direction = global_position.direction_to(player.position)
+	velocity = direction * SPEED
+	move_and_slide()
+	
 # death effect
 func deathProcess() -> void:
 	var death_scene = DEATH_SCENE.instantiate()
@@ -30,8 +31,8 @@ func updateAnimations():
 	#set direction towards the player
 	playerDirection = player.position.x - global_position.x
 	if playerDirection >= 0:
-		direction.x = 1
+		xDirection.x = 1
 	else:
-		direction.x = -1	
+		xDirection.x = -1	
 	#animated_sprite_2d.scale.x = direction.x
 	#play anim
