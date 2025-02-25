@@ -17,16 +17,35 @@ one_shot = true
 
 [node name="RabilityBtn" parent="." instance=ExtResource("2_yrntk")]
 layout_mode = 0
+offset_left = 76.0
+offset_right = 116.0
 disabled = true
 text = "R"
 timer = 1.0
 
 [node name="EabilityBtn" parent="." instance=ExtResource("2_yrntk")]
 layout_mode = 0
-offset_left = 40.0
-offset_right = 80.0
+offset_left = 114.0
+offset_right = 154.0
 disabled = true
 text = "E"
 timer = 1.0
 
+[node name="M1Btn" parent="." instance=ExtResource("2_yrntk")]
+layout_mode = 0
+text = "M1"
+timer = 0.35
+
+[node name="M2Btn" parent="." instance=ExtResource("2_yrntk")]
+layout_mode = 0
+offset_left = 38.0
+offset_right = 78.0
+text = "M2"
+timer = 1.0
+
+[node name="SwingTimer" type="Timer" parent="."]
+wait_time = 0.35
+one_shot = true
+
 [connection signal="timeout" from="ThrowTimer" to="." method="_on_throw_timer_timeout"]
+[connection signal="timeout" from="SwingTimer" to="." method="_on_swing_timer_timeout"]
