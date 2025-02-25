@@ -27,6 +27,7 @@ func deathProcess() -> void:
 	death_scene.position = global_position
 	get_tree().root.add_child(death_scene)
 
+#animations, flip sprite depending on x-position relative to player
 func updateAnimations():
 	#set direction towards the player
 	playerDirection = player.position.x - global_position.x

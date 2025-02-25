@@ -6,7 +6,10 @@ const BIRD_SCENE = preload("res://Scenes/enemy_2.tscn")
 var spawnPos1: Vector2
 var time: float
 
+#left or right, will be flipped between -1 and 1 in spawn logic for goblin
+#to change spawn location
 var direction = 1
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	# Sets ground sprite to be same as collision box
@@ -15,6 +18,7 @@ func _ready() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 	$SpawnTimer.start()
 	$SpawnBird.start()
+	
 # single input events handled here
 func _input(event):
 	if event.is_action_pressed("quit"):
