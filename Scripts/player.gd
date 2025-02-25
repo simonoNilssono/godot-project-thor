@@ -29,7 +29,10 @@ func _input(event: InputEvent) -> void:
 		
 	if event.is_action_pressed("HoverHammer") and hammerLess == true:
 		hoverHammer()
-		
+	
+	#FOR testing do not press q 
+	if event.is_action_pressed("test") and hammerLess == true:	
+		fly2Hammer()
 # physics dependent events here
 func _physics_process(delta: float) -> void:
 	# Get the input direction/axis
@@ -39,7 +42,6 @@ func _physics_process(delta: float) -> void:
 	handleJump()	
 	accelOrDeccel(inputAxis, delta)
 	updateAnimations(inputAxis)
-	fly2Hammer(delta)
 	move_and_slide()
 
 
@@ -75,12 +77,14 @@ func handleJump()-> void:
 		if Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
 			velocity.y = JUMP_VELOCITY /2
 
-
-func fly2Hammer(delta) -> void:
-	if Input.is_action_just_pressed("test") and hammerLess == true:
-		look_at(hammer.position)
-		position += (transform.x * 1000 * delta)
-		#Global.hammerReturned.emit()
+#testtestesteste
+func fly2Hammer() -> void:
+		#set_physics_process(false)
+		#while hammerLess == true:
+		var direction = global_position.direction_to(hammer.position)
+		velocity = direction * 300
+		move_and_slide()
+		#set_physics_process(true)
 
 
 #-----------HAMMER-STUFF-------------#
