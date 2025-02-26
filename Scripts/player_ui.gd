@@ -21,6 +21,7 @@ func _on_start_throw():
 	$M2Btn.disabled = true
 	$RabilityBtn.disabled = false
 	$EabilityBtn.disabled = false
+	$QBtn.disabled = false
 
 # Hovering, disable hover btn
 func _on_hover():
@@ -38,6 +39,8 @@ func throwCooldown():
 	$M2Btn.disabled = false
 	$RabilityBtn.disabled = false
 	$EabilityBtn.disabled = false
+	$QBtn.disabled = false
+	$QBtn.startTimer()
 	$RabilityBtn.startTimer()
 	$EabilityBtn.startTimer()
 	$M2Btn.startTimer()
@@ -46,7 +49,7 @@ func throwCooldown():
 func _on_throw_timer_timeout() -> void:
 	$RabilityBtn.disabled = true
 	$EabilityBtn.disabled = true
-
+	$QBtn.disabled = true
 #swing is done, reenable swing btn
 func _on_swing_timer_timeout() -> void:
 	$M2Btn.disabled = false

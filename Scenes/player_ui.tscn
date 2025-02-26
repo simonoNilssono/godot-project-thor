@@ -31,6 +31,14 @@ disabled = true
 text = "E"
 timer = 1.0
 
+[node name="QBtn" parent="." instance=ExtResource("2_yrntk")]
+layout_mode = 0
+offset_left = 152.0
+offset_right = 192.0
+disabled = true
+text = "Q"
+timer = 1.0
+
 [node name="M1Btn" parent="." instance=ExtResource("2_yrntk")]
 layout_mode = 0
 text = "M1"

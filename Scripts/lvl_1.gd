@@ -16,8 +16,8 @@ func _ready() -> void:
 	ground.polygon = groundCollision.polygon
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
-	#$SpawnTimer.start()
-	#$SpawnBird.start()
+	$SpawnTimer.start()
+	$SpawnBird.start()
 	
 # single input events handled here
 func _input(event):

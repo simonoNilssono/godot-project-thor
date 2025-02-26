@@ -15,7 +15,7 @@ var flying = false
 
 func _ready():
 	Global.hammerReturned.connect(_on_hammer_returned)
-	Global.flying2Hammer.connect(_on_fly2Hammer)
+	
 
 # single input events handled here
 func _input(event: InputEvent) -> void:
@@ -26,14 +26,14 @@ func _input(event: InputEvent) -> void:
 		) and $ThrowCooldown.is_stopped():
 			hammerThrow()
 			
-	if event.is_action_pressed("teleport2Hammer") and hammerLess  == true:
+	if event.is_action_pressed("teleport2Hammer") and hammerLess == true and flying == false:
 		teleport2Hammer()
 		
 	if event.is_action_pressed("HoverHammer") and hammerLess == true:
 		hoverHammer()
 	
-	#FOR testing do not press q 
-	if event.is_action_pressed("test") and hammerLess == true:	
+	if event.is_action_pressed("Fly2Hammer") and hammerLess == true:	
+		flying = true
 		Global.flying2Hammer.emit()
 
 # physics dependent events here
@@ -60,7 +60,7 @@ func getMouseDirX() -> int:
 
 #-------------MOVEMENT-------------#
 
-#Accel/deccel depending on input or no input	
+#Accel/deccel depending on input or no input and if flying
 func accelOrDeccel(inputAxis, delta) -> void:
 	if flying == false:
 		if inputAxis != 0:
@@ -70,7 +70,7 @@ func accelOrDeccel(inputAxis, delta) -> void:
 	
 	else:
 		var flyDirection = global_position.direction_to(hammer.position)
-		velocity = flyDirection * (SPEED*15)
+		velocity = flyDirection * (SPEED*12)
 		
 #Gravity
 func addGravity(delta:float)-> void:
@@ -85,15 +85,7 @@ func handleJump()-> void:
 		if Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
 			velocity.y = JUMP_VELOCITY /2
 
-#testtestesteste
-func _on_fly2Hammer() -> void:
-		#set_physics_process(false)
-		#while hammerLess == true:
-		flying = true
-		#var flyDirection = global_position.direction_to(hammer.position)
-		#velocity = flyDirection * SPEED
-		#move_and_slide()
-		#set_physics_process(true)
+
 
 
 #-----------HAMMER-STUFF-------------#
