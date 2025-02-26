@@ -10,7 +10,7 @@ var startPos : Vector2
 enum State {Swung, Thrown, Returning, Hover}
 var current_state : State
 var player : Node2D
-
+var playerFlying = false
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 
 # Called when the node enters the scene tree for the first time.
@@ -19,7 +19,7 @@ func _ready() -> void:
 	Global.startSwing.connect(_on_swing_timer_start)
 	Global.startThrow.connect(_on_throw_timer_start)
 	Global.hover.connect(_on_hover)
-	
+	Global.flying2Hammer.connect(_on_fly2Hammer)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
@@ -93,6 +93,11 @@ func returning(delta) -> void:
 func _on_throw_timer_timeout() -> void:
 	current_state = State.Returning
 
+#player is flying 2 hammer
+func _on_fly2Hammer() -> void:
+	playerFlying = true
+	
+
 #Detect collisions
 func _on_body_entered(body: Node2D) -> void:
 	if body.is_in_group("Enemies"):
@@ -106,4 +111,9 @@ func _on_body_entered(body: Node2D) -> void:
 	#if hammer returned, delete instance	
 	if body.is_in_group("Player") and current_state == State.Returning:
 		Global.hammerReturned.emit()
+	
+	#if hammer collides with flying player
+	if body.is_in_group("Player") and playerFlying == true :
+		Global.hammerReturned.emit()
+		
 		

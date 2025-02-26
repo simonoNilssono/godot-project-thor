@@ -11,10 +11,12 @@ const JUMP_VELOCITY = -300.0
 
 var hammer : Node2D
 var hammerLess = false
+var flying = false
 
 func _ready():
 	Global.hammerReturned.connect(_on_hammer_returned)
-	
+	Global.flying2Hammer.connect(_on_fly2Hammer)
+
 # single input events handled here
 func _input(event: InputEvent) -> void:
 	if not hammerLess:	
@@ -32,7 +34,8 @@ func _input(event: InputEvent) -> void:
 	
 	#FOR testing do not press q 
 	if event.is_action_pressed("test") and hammerLess == true:	
-		fly2Hammer()
+		Global.flying2Hammer.emit()
+
 # physics dependent events here
 func _physics_process(delta: float) -> void:
 	# Get the input direction/axis
@@ -59,14 +62,19 @@ func getMouseDirX() -> int:
 
 #Accel/deccel depending on input or no input	
 func accelOrDeccel(inputAxis, delta) -> void:
-	if inputAxis != 0:
-		velocity.x = move_toward(velocity.x,SPEED*inputAxis, ACCELERATION*delta)	
+	if flying == false:
+		if inputAxis != 0:
+			velocity.x = move_toward(velocity.x,SPEED*inputAxis, ACCELERATION*delta)	
+		else:
+			velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
+	
 	else:
-		velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
+		var flyDirection = global_position.direction_to(hammer.position)
+		velocity = flyDirection * (SPEED*15)
 		
 #Gravity
 func addGravity(delta:float)-> void:
-	if not is_on_floor():
+	if not is_on_floor() and flying == false:
 		velocity += get_gravity() * delta
 
 #High or short jump depending on if key is held
@@ -78,12 +86,13 @@ func handleJump()-> void:
 			velocity.y = JUMP_VELOCITY /2
 
 #testtestesteste
-func fly2Hammer() -> void:
+func _on_fly2Hammer() -> void:
 		#set_physics_process(false)
 		#while hammerLess == true:
-		var direction = global_position.direction_to(hammer.position)
-		velocity = direction * 300
-		move_and_slide()
+		flying = true
+		#var flyDirection = global_position.direction_to(hammer.position)
+		#velocity = flyDirection * SPEED
+		#move_and_slide()
 		#set_physics_process(true)
 
 
@@ -135,6 +144,8 @@ func _on_hammer_returned()-> void:
 	$ThrowCooldown.start()
 	hammer.queue_free()
 	hammerLess = false
+	flying = false
+	velocity.y = 0
 
 #------ANIMATIONS-------#
 
