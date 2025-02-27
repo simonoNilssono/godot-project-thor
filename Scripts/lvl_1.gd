@@ -16,15 +16,15 @@ func _ready() -> void:
 	ground.polygon = groundCollision.polygon
 	
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
-	$SpawnTimer.start()
-	$SpawnBird.start()
+	#$SpawnTimer.start()
+	#$SpawnBird.start()
 	
 # single input events handled here
 func _input(event):
 	if event.is_action_pressed("quit"):
 		get_tree().quit()	
-		
-	
+
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
 	pass

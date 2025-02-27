@@ -11,11 +11,12 @@ const JUMP_VELOCITY = -300.0
 
 var hammer : Node2D
 var hammerLess = false
-var flying = false
+enum State {Normal, Flying}
+var current_state : State
 
 func _ready():
 	Global.hammerReturned.connect(_on_hammer_returned)
-	
+	current_state = State.Normal
 
 # single input events handled here
 func _input(event: InputEvent) -> void:
@@ -26,28 +27,32 @@ func _input(event: InputEvent) -> void:
 		) and $ThrowCooldown.is_stopped():
 			hammerThrow()
 			
-	if event.is_action_pressed("teleport2Hammer") and hammerLess == true and flying == false:
+	if event.is_action_pressed("teleport2Hammer") and hammerLess == true:
 		teleport2Hammer()
 		
 	if event.is_action_pressed("HoverHammer") and hammerLess == true:
 		hoverHammer()
 	
 	if event.is_action_pressed("Fly2Hammer") and hammerLess == true:	
-		flying = true
+		current_state = State.Flying
 		Global.flying2Hammer.emit()
 
 # physics dependent events here
 func _physics_process(delta: float) -> void:
-	# Get the input direction/axis
-	var inputAxis := Input.get_axis("Left", "Right")
-	
-	addGravity(delta)
-	handleJump()	
-	accelOrDeccel(inputAxis, delta)
-	updateAnimations(inputAxis)
-	move_and_slide()
-
-
+	match current_state:
+		State.Normal:
+			# Get the input direction/axis
+			var inputAxis := Input.get_axis("Left", "Right")
+			
+			addGravity(delta)
+			handleJump()	
+			accelOrDeccel(inputAxis, delta)
+			updateAnimations(inputAxis)
+			move_and_slide()
+		State.Flying:
+			var flyDirection = global_position.direction_to(hammer.position)
+			velocity = flyDirection * SPEED * 12
+			move_and_slide()
 #Get mouse x direction relative to player and return as an int	
 func getMouseDirX() -> int:
 	var mouseDir = 0
@@ -62,19 +67,17 @@ func getMouseDirX() -> int:
 
 #Accel/deccel depending on input or no input and if flying
 func accelOrDeccel(inputAxis, delta) -> void:
-	if flying == false:
-		if inputAxis != 0:
-			velocity.x = move_toward(velocity.x,SPEED*inputAxis, ACCELERATION*delta)	
-		else:
-			velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
 	
+	if inputAxis != 0:
+		velocity.x = move_toward(velocity.x,SPEED*inputAxis, ACCELERATION*delta)	
 	else:
-		var flyDirection = global_position.direction_to(hammer.position)
-		velocity = flyDirection * (SPEED*12)
+		velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
+	
+	
 		
 #Gravity
 func addGravity(delta:float)-> void:
-	if not is_on_floor() and flying == false:
+	if not is_on_floor():
 		velocity += get_gravity() * delta
 
 #High or short jump depending on if key is held
@@ -136,7 +139,7 @@ func _on_hammer_returned()-> void:
 	$ThrowCooldown.start()
 	hammer.queue_free()
 	hammerLess = false
-	flying = false
+	current_state = State.Normal
 	velocity.y = 0
 
 #------ANIMATIONS-------#
