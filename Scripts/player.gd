@@ -43,7 +43,6 @@ func _physics_process(delta: float) -> void:
 		State.Normal:
 			# Get the input direction/axis
 			var inputAxis := Input.get_axis("Left", "Right")
-			
 			addGravity(delta)
 			handleJump()	
 			accelOrDeccel(inputAxis, delta)
@@ -67,14 +66,11 @@ func getMouseDirX() -> int:
 
 #Accel/deccel depending on input or no input and if flying
 func accelOrDeccel(inputAxis, delta) -> void:
-	
 	if inputAxis != 0:
 		velocity.x = move_toward(velocity.x,SPEED*inputAxis, ACCELERATION*delta)	
 	else:
 		velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
-	
-	
-		
+
 #Gravity
 func addGravity(delta:float)-> void:
 	if not is_on_floor():
@@ -84,11 +80,9 @@ func addGravity(delta:float)-> void:
 func handleJump()-> void:
 	if Input.is_action_just_pressed("Up") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
-	else:
-		if Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
+	elif Input.is_action_just_released("Up") and velocity.y < JUMP_VELOCITY / 2:
 			velocity.y = JUMP_VELOCITY /2
-
-
+		
 
 
 #-----------HAMMER-STUFF-------------#
@@ -156,8 +150,7 @@ func updateAnimations(inputAxis)-> void:
 				animated_sprite_2d.play("run")
 			if not is_on_floor():
 				animated_sprite_2d.play("jump")		
-	else:
-		if not (animated_sprite_2d.animation == "swing" and animated_sprite_2d.is_playing()):
+	elif not (animated_sprite_2d.animation == "swing" and animated_sprite_2d.is_playing()):
 			if inputAxis == 0:
 				animated_sprite_2d.play("idle_hammerless")
 			else: 
@@ -165,6 +158,7 @@ func updateAnimations(inputAxis)-> void:
 				animated_sprite_2d.play("run_hammerless")
 			if not is_on_floor():
 				animated_sprite_2d.play("jump_hammerless")
+		
 
 # stop looping hit animation 
 func _on_timer_timeout() -> void:
