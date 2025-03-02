@@ -13,9 +13,7 @@ var hammer : Node2D
 var hammerLess = false
 enum State {Grounded,Flying}
 var current_state : State
-enum AnimationState {Idle,Jumping,Swinging,Running,HLIdle,HLJumping,HLSwinging,
-HLRunning}
-var animation_state : AnimationState
+
 
 func _ready():
 	Global.hammerReturned.connect(_on_hammer_returned)
