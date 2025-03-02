@@ -11,18 +11,19 @@ const JUMP_VELOCITY = -300.0
 
 var hammer : Node2D
 var hammerLess = false
-enum State {Normal, Flying}
+enum State {Grounded,Flying,HammerLess,Jumping,Running,Swinging,Idle}
 var current_state : State
 
 func _ready():
 	Global.hammerReturned.connect(_on_hammer_returned)
-	current_state = State.Normal
+	current_state = State.Grounded
 
 # single input events handled here
 func _input(event: InputEvent) -> void:
 	if not hammerLess:	
 		if event.is_action_pressed("SwingHammer"):
 			hammerSwing()
+			
 		if event.is_action_pressed("Throw Hammer") and $SwingTimer.is_stopped(
 		) and $ThrowCooldown.is_stopped():
 			hammerThrow()
@@ -40,8 +41,7 @@ func _input(event: InputEvent) -> void:
 # physics dependent events here
 func _physics_process(delta: float) -> void:
 	match current_state:
-		State.Normal:
-			# Get the input direction/axis
+		State.Grounded:
 			var inputAxis := Input.get_axis("Left", "Right")
 			addGravity(delta)
 			handleJump()	
@@ -52,6 +52,7 @@ func _physics_process(delta: float) -> void:
 			var flyDirection = global_position.direction_to(hammer.position)
 			velocity = flyDirection * SPEED * 12
 			move_and_slide()
+
 #Get mouse x direction relative to player and return as an int	
 func getMouseDirX() -> int:
 	var mouseDir = 0
@@ -133,7 +134,7 @@ func _on_hammer_returned()-> void:
 	$ThrowCooldown.start()
 	hammer.queue_free()
 	hammerLess = false
-	current_state = State.Normal
+	current_state = State.Grounded
 	velocity.y = 0
 
 #------ANIMATIONS-------#
