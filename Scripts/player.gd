@@ -11,8 +11,11 @@ const JUMP_VELOCITY = -300.0
 
 var hammer : Node2D
 var hammerLess = false
-enum State {Grounded,Flying,HammerLess,Jumping,Running,Swinging,Idle}
+enum State {Grounded,Flying}
 var current_state : State
+enum AnimationState {Idle,Jumping,Swinging,Running,HLIdle,HLJumping,HLSwinging,
+HLRunning}
+var animation_state : AnimationState
 
 func _ready():
 	Global.hammerReturned.connect(_on_hammer_returned)
@@ -151,14 +154,13 @@ func updateAnimations(inputAxis)-> void:
 				animated_sprite_2d.play("run")
 			if not is_on_floor():
 				animated_sprite_2d.play("jump")		
-	elif not (animated_sprite_2d.animation == "swing" and animated_sprite_2d.is_playing()):
-			if inputAxis == 0:
-				animated_sprite_2d.play("idle_hammerless")
-			else: 
-				animated_sprite_2d.scale.x = inputAxis
-				animated_sprite_2d.play("run_hammerless")
-			if not is_on_floor():
-				animated_sprite_2d.play("jump_hammerless")
+	elif inputAxis == 0:
+		animated_sprite_2d.play("idle_hammerless")
+	else: 
+		animated_sprite_2d.scale.x = inputAxis
+		animated_sprite_2d.play("run_hammerless")
+		if not is_on_floor():
+			animated_sprite_2d.play("jump_hammerless")
 		
 
 # stop looping hit animation 
