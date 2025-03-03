@@ -13,11 +13,13 @@ var hammer : Node2D
 var hammerLess = false
 enum State {Grounded,Flying}
 var current_state : State
-
+enum AnimState {Idle,Jumping,Running,Swinging}
+var anim_state : AnimState = AnimState.Idle
 
 func _ready():
 	Global.hammerReturned.connect(_on_hammer_returned)
 	current_state = State.Grounded
+	
 
 # single input events handled here
 func _input(event: InputEvent) -> void:
@@ -31,10 +33,8 @@ func _input(event: InputEvent) -> void:
 			
 	if event.is_action_pressed("teleport2Hammer") and hammerLess == true:
 		teleport2Hammer()
-		
 	if event.is_action_pressed("HoverHammer") and hammerLess == true:
 		hoverHammer()
-	
 	if event.is_action_pressed("Fly2Hammer") and hammerLess == true:	
 		current_state = State.Flying
 		Global.flying2Hammer.emit()
@@ -43,16 +43,18 @@ func _input(event: InputEvent) -> void:
 func _physics_process(delta: float) -> void:
 	match current_state:
 		State.Grounded:
+			#var inputAxis := Input.get_axis("Left", "Right")
 			var inputAxis := Input.get_axis("Left", "Right")
-			addGravity(delta)
-			handleJump()	
 			accelOrDeccel(inputAxis, delta)
+			handleJump()
+			addGravity(delta)	
 			updateAnimations(inputAxis)
 			move_and_slide()
 		State.Flying:
 			var flyDirection = global_position.direction_to(hammer.position)
 			velocity = flyDirection * SPEED * 12
 			move_and_slide()
+
 
 #Get mouse x direction relative to player and return as an int	
 func getMouseDirX() -> int:
@@ -66,17 +68,19 @@ func getMouseDirX() -> int:
 
 #-------------MOVEMENT-------------#
 
-#Accel/deccel depending on input or no input and if flying
+#Accel/deccel depending on input or no input
 func accelOrDeccel(inputAxis, delta) -> void:
 	if inputAxis != 0:
-		velocity.x = move_toward(velocity.x,SPEED*inputAxis, ACCELERATION*delta)	
+		velocity.x = move_toward(velocity.x,SPEED*inputAxis, ACCELERATION*delta)
+		anim_state = AnimState.Running	
 	else:
 		velocity.x = move_toward(velocity.x, 0, FRICTION*delta)
-
+		anim_state = AnimState.Idle
 #Gravity
 func addGravity(delta:float)-> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+		anim_state = AnimState.Jumping
 
 #High or short jump depending on if key is held
 func handleJump()-> void:
@@ -114,6 +118,10 @@ func hammerSwing() -> void:
 		if $SwingTimer.is_stopped():
 			instantiateHammer().position += Vector2(getMouseDirX()*28,-20)
 			Global.startSwing.emit()
+			
+			#not used atm
+			anim_state = AnimState.Swinging
+			
 			animated_sprite_2d.play("swing")
 			$SwingTimer.start()
 
@@ -145,23 +153,20 @@ func updateAnimations(inputAxis)-> void:
 	animated_sprite_2d.scale.x = getMouseDirX()
 	if not hammerLess:
 		if not (animated_sprite_2d.animation == "swing" and animated_sprite_2d.is_playing()):
-			if inputAxis == 0:
+			if anim_state == AnimState.Idle:
 				animated_sprite_2d.play("idle")
-			else: 
-				animated_sprite_2d.scale.x = inputAxis
+			elif anim_state == AnimState.Running:
 				animated_sprite_2d.play("run")
-			if not is_on_floor():
-				animated_sprite_2d.play("jump")		
-	elif inputAxis == 0:
+			elif anim_state == AnimState.Jumping:
+				animated_sprite_2d.play("jump")
+	elif anim_state == AnimState.Idle:
 		animated_sprite_2d.play("idle_hammerless")
-	else: 
-		animated_sprite_2d.scale.x = inputAxis
+	elif anim_state == AnimState.Running:
 		animated_sprite_2d.play("run_hammerless")
-		if not is_on_floor():
-			animated_sprite_2d.play("jump_hammerless")
-		
+	elif anim_state == AnimState.Jumping:
+		animated_sprite_2d.play("jump_hammerless")		
 
-# stop looping hit animation 
+# stop looping hit animation  
 func _on_timer_timeout() -> void:
 	animated_sprite_2d.stop()
-		
+	
