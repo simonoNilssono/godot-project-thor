@@ -156,12 +156,14 @@ func updateAnimations(inputAxis)-> void:
 			if anim_state == AnimState.Idle:
 				animated_sprite_2d.play("idle")
 			elif anim_state == AnimState.Running:
+				animated_sprite_2d.scale.x = inputAxis
 				animated_sprite_2d.play("run")
 			elif anim_state == AnimState.Jumping:
 				animated_sprite_2d.play("jump")
 	elif anim_state == AnimState.Idle:
 		animated_sprite_2d.play("idle_hammerless")
 	elif anim_state == AnimState.Running:
+		animated_sprite_2d.scale.x = inputAxis
 		animated_sprite_2d.play("run_hammerless")
 	elif anim_state == AnimState.Jumping:
 		animated_sprite_2d.play("jump_hammerless")		
